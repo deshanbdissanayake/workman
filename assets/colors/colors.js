@@ -1,11 +1,16 @@
 const colors = {
-    bgLight : '#f5f0f0', //white - red
-    textLight : '#f9f4f4', //gray
+    bgLight : '#f5f4f0', //white - orange
+    bgDark : '#373737', //black
+
+    textLight : '#f9f8f4', //gray
     textGray : '#888888', //gray
     textDark : '#373737', //black
-    primary : '#ff4b3d', //light red
-    primaryDark : '#c8362b', //dark red
-    secondary : '#ffaa61', //orange
+
+    primary : '#ffb900', //yellow - orange
+    primaryDark : '#df690c', //orange
+    secondary : '#ff4b3d', //light red
+    secondaryDark : '#c8362b', //dark red
+
     white : '#FFFFFF',
     black : '#000000',
     gray : '#b2b2b2', 

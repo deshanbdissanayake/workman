@@ -1,7 +1,7 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { Image, StyleSheet, Text, View } from 'react-native'
 import React, { useState } from 'react'
 import Button from '../components/Button'
-import Gif from '../components/Gif'
+
 import colors from '../assets/colors/colors'
 
 const Welcome = ({navigation}) => {
@@ -13,14 +13,14 @@ const Welcome = ({navigation}) => {
     return (
         <View style={styles.welcomeContainer}>
             <View style={styles.welcomeTopWrapper}>
-                <Gif/>
+                <Image source={require('../assets/images/logo.png')} style={styles.imageStyles} />
             </View>
             <View style={styles.welcomeBottomWrapper}>
                 <View>
                     <Text style={styles.welcomeTitle}>Hello There !!</Text>
                     <Text style={styles.welcomeDesc}>Accept your orders, deliver them and make customer happy with your service.</Text>
                 </View>
-                <Button bgColor={colors.primary} txtColor={colors.textLight} text={'Get Started'} func={getStartedFunc} />
+                <Button bgColor={colors.primaryDark} txtColor={colors.textLight} text={'Get Started'} func={getStartedFunc} />
             </View>
         </View>
     )
@@ -37,6 +37,10 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
+    },
+    imageStyles: {
+        width: 150,
+        resizeMode: 'contain',
     },
     welcomeBottomWrapper : {
         flex: 1,

@@ -1,25 +1,16 @@
-import React,{ useContext } from 'react';
-import { AuthContext } from '../context/AuthContext';
+import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { StatusBar } from 'react-native';
 import colors from '../assets/colors/colors';
-
-// Other Imports
-import AuthNav from './AuthNav';
-import HomeNav from './HomeNav';
+import Home from '../screens/Home';
+import Welcome from '../screens/Welcome';
+import SplashScreen from '../screens/SplashScreen';
 
 const AppNav = () => {
-
-  const { userToken } = useContext(AuthContext);
-
   return (
     <NavigationContainer>
-      <StatusBar backgroundColor={colors.primary} barStyle="light-content" />
-      {userToken !== null ? (
-        <HomeNav/>
-      ) : (
-        <AuthNav/>
-      )}
+      <StatusBar backgroundColor={colors.bgDark} barStyle="light-content" />
+      <Home/>
     </NavigationContainer>
   );
 };

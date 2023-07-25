@@ -24,7 +24,7 @@ const App = () => {
     return (
       <AuthProvider>
           <View style={styles.container}>
-            <StatusBar backgroundColor={colors.bgLight} barStyle="dark-content" />
+            <StatusBar backgroundColor={colors.bgDark} barStyle="light-content" />
             <AppNav />
           </View>
       </AuthProvider>

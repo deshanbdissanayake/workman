@@ -1,118 +1,68 @@
-import { ScrollView, StyleSheet, Text, View } from 'react-native'
-import React, { useState, useEffect } from 'react'
-import MiniButton from './MiniButton'
-import colors from '../assets/colors/colors'
-import { Ionicons, Octicons } from '@expo/vector-icons'
+import React from 'react';
+import { Text, View, Image, StyleSheet, TouchableOpacity } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 
-import { useFocusEffect, useNavigation } from '@react-navigation/native';
-import { DrawerActions } from '@react-navigation/native';
-import { getNotificationsByUserId } from '../assets/data/user'
-import { useCallback } from 'react'
+import colors from '../assets/colors/colors'; 
 
-const Header = ({showSearch, name, searchFunc}) => {
-    const navigation = useNavigation();
-    const [pendingNotif, setPendingNotif] = useState(false)
-
-    useEffect(()=>{
-        hasPendingNotifications();
-    },[])
-
-    // Use useFocusEffect hook to hide the CustomAlert when the screen gains focus
-    useFocusEffect(
-        useCallback(() => {
-        return () => {
-            hasPendingNotifications();
-        };
-        }, [])
-    );
-
-    const hasPendingNotifications = async () => {
-        const notifications = await getNotificationsByUserId();
-        if(notifications !== null){
-            const pending = notifications.some((notification) => notification.status === "pending");
-            setPendingNotif(pending)
-        }
-    };
-
-    const handleNotifications = () => {
-        navigation.navigate('Notifications');
-    };
-
-    const handleMenu = () => {
-        navigation.dispatch(DrawerActions.openDrawer());
-    }
-
-    return (
-        <View style={styles.headerContainer}>
-            <View style={styles.headerLeft}>
-                {/*<MiniButton
-                    bgColor={colors.bgLight}
-                    func={handleMenu}
-                    content={<Ionicons name="menu" size={24} color={colors.textDark} />}
-                />*/}
-                <Text style={styles.headerTitle}>{name}</Text>
-            </View>
-            <View style={styles.headerRight}>
-                {showSearch && (
-                    <MiniButton
-                        bgColor={colors.white}
-                        func={searchFunc}
-                        content={<Ionicons name="search-sharp" size={24} color={colors.textDark} />}
-                    />
-                )}
-
-                <MiniButton
-                    bgColor={colors.white}
-                    func={handleNotifications}
-                    content={<Octicons name="bell" size={21} color={colors.textDark} />}
-                />
-                {
-                    pendingNotif && (
-                        <View style={styles.pendingNotificationsStyles}></View>
-                    )
-                }
-            </View>
-        </View>
-    )
+const handleDrawer = () => {
+    console.log('handle drawer')
 }
 
-export default Header
+const handleUser = () => {
+    console.log('handle user')
+}
+
+const Header = ({name}) => {
+  return (
+    <View style={styles.container}>
+      <View style={styles.leftContainer}>
+        <TouchableOpacity onPress={handleDrawer}>
+            <View style={styles.buttonClickAreaStyles}>
+                <Ionicons name="menu" size={24} color={colors.textLight} />
+            </View>
+        </TouchableOpacity>
+        <Text style={styles.headerTextStyles}>{name}</Text>
+      </View>
+      <View style={styles.rightContainer}>
+        <TouchableOpacity onPress={handleUser}>
+            <View style={styles.buttonClickAreaStyles}>
+                <Ionicons name="person" size={24} color={colors.textLight} />
+            </View>
+        </TouchableOpacity>
+      </View>
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
-    headerContainer:{
-        flex: 1,
-        maxHeight: 65,
+    container : {
+        height: 60,
+        backgroundColor: colors.bgDark,
         flexDirection: 'row',
-        padding : 15,
         justifyContent: 'space-between',
         alignItems: 'center',
-        backgroundColor: colors.white,
+        paddingHorizontal: 10,
+        paddingVertical: 10,
     },
-    headerTitle: {
+    leftContainer : {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+    },
+    headerTextStyles : {
         fontFamily: 'ms-bold',
-        textTransform: 'uppercase',
-        fontSize: 16,
-        color: colors.textDark,
+        fontSize: 18,
+        color: colors.textLight,
+        marginLeft: 10,
     },
-    headerLeft: {
-        flex: 1,
+    rightContainer : {
         flexDirection: 'row',
+        justifyContent: 'space-between',
         alignItems: 'center',
     },
-    headerRight:{
-        flex: 1,
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'flex-end',
+    buttonClickAreaStyles: {
+        padding: 10,
     },
-    pendingNotificationsStyles: {
-        position: 'absolute',
-        right: 6,
-        top: 5,
-        width: 10,
-        height: 10,
-        borderRadius: 50,
-        backgroundColor: colors.primary,
-        zIndex: 2,
-    },
-})
+});
+
+export default Header;

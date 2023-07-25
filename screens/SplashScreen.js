@@ -1,11 +1,12 @@
-import { StyleSheet, View } from 'react-native';
+import { Image, StyleSheet, View } from 'react-native';
 import React from 'react';
-import Gif from '../components/Gif';
+import colors from '../assets/colors/colors';
+
 
 const SplashScreen = () => {
   return (
     <View style={styles.container}>
-      <Gif/>
+      <Image source={require('../assets/images/logo.png')} style={styles.imageStyles} />
     </View>
   )
 }
@@ -17,5 +18,10 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: colors.primary,
+  },
+  imageStyles: {
+      width: 150,
+      resizeMode: 'contain',
   },
 })
