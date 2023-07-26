@@ -4,7 +4,8 @@ import { View, Keyboard, StatusBar, StyleSheet } from 'react-native';
 // Other Imports
 import AppNav from './navigation/AppNav';
 import colors from './assets/colors/colors';
-import { AuthProvider } from './context/AuthContext';
+import { useFonts } from 'expo-font';
+import SplashScreen from './screens/SplashScreen';
 
 const App = () => {
 
@@ -20,14 +21,25 @@ const App = () => {
       };
     }, []);
 
+    // load fonts
+    const [fontsLoaded] = useFonts({
+      'ms-regular': require('./assets/fonts/montserrat/Montserrat-Regular.ttf'),
+      'ms-semibold': require('./assets/fonts/montserrat/Montserrat-SemiBold.ttf'),
+      'ms-bold': require('./assets/fonts/montserrat/Montserrat-Bold.ttf'),
+      'pop-regular': require('./assets/fonts/poppins/Poppins-Regular.ttf'),
+      'pop-semibold': require('./assets/fonts/poppins/Poppins-SemiBold.ttf'),
+      'pop-bold': require('./assets/fonts/poppins/Poppins-Bold.ttf'),
+    }); 
+
+    if (!fontsLoaded) {
+      return <SplashScreen/>
+    }
 
     return (
-      <AuthProvider>
           <View style={styles.container}>
             <StatusBar backgroundColor={colors.bgDark} barStyle="light-content" />
             <AppNav />
           </View>
-      </AuthProvider>
     );
 }
 

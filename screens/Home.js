@@ -100,10 +100,22 @@ const Home = () => {
           <View style={styles.categories}>
             {categories &&
               categories.slice(0, 8).map((category) => (
-                <CardCategory id={category.id} img={category.image} name={category.name} func={() => handleClickCategory(category)}/>
+                <CardCategory 
+                  id={category.id} 
+                  key={category.id} 
+                  img={category.image} 
+                  name={category.name} 
+                  func={() => handleClickCategory(category)}
+                />
               ))}
             {categories && categories.length > 7 && (
-                <CardCategory id={"view-more"} img={require("../assets/images/category/view-more.png")} name={'View More'} func={handleViewMore}/>
+                <CardCategory 
+                  id={"view-more"} 
+                  key={"view-more"} 
+                  img={require("../assets/images/category/view-more.png")} 
+                  name={'View More'} 
+                  func={handleViewMore}
+                />
             )}
           </View>
         </View>

@@ -1,18 +1,28 @@
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
+import { StyleSheet, Text, View, TouchableOpacity, ActivityIndicator } from 'react-native'
 import React from 'react'
 import colors from '../assets/colors/colors'
 
-const Button = ({bgColor, txtColor, text, func, bdr=''}) => {
+const Button = ({bgColor, txtColor, text, func, bdr='', loading=false}) => {
   return (
-    <TouchableOpacity
-      style={[
-        styles.buttonWrapper,
-        { backgroundColor: bgColor, borderWidth: bdr === '' ? 0 : 1, borderColor: bdr === '' ? 'transparent' : bdr }
-      ]}
-      onPress={func}
-    >
-      <Text style={[styles.buttonText, {color: txtColor}]}>{text}</Text>
-    </TouchableOpacity>
+    <>
+      {loading ? (
+        <View style={[styles.buttonWrapper, {backgroundColor: colors.border}]}>
+          <View style={styles.buttonText}>
+            <ActivityIndicator size={24} color={colors.textDark} />
+          </View>
+        </View>
+      ): (
+      <TouchableOpacity
+        style={[
+          styles.buttonWrapper,
+          { backgroundColor: bgColor, borderWidth: bdr === '' ? 0 : 1, borderColor: bdr === '' ? 'transparent' : bdr }
+        ]}
+        onPress={func}
+      >
+          <Text style={[styles.buttonText, {color: txtColor}]}>{text}</Text>
+      </TouchableOpacity>
+      )}
+    </>
   )
 }
 

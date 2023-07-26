@@ -8,6 +8,7 @@ import Home from '../screens/Home';
 import Welcome from '../screens/Welcome';
 import SplashScreen from '../screens/SplashScreen';
 import SingleCategoryScreen from '../screens/SingleCategoryScreen';
+import RegisterScreen from '../screens/RegisterScreen';
 
 const Stack = createStackNavigator();
 
@@ -26,6 +27,13 @@ const AppNav = () => {
         <Stack.Screen
           name="Single Screen"
           component={SingleCategoryScreen}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="Register Screen"
+          component={RegisterScreen}
           options={{
             headerShown: false,
           }}

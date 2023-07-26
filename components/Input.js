@@ -2,9 +2,9 @@ import { StyleSheet, Text, TextInput, View } from "react-native";
 import React from "react";
 import colors from "../assets/colors/colors";
 
-const Input = ({keyboardType, value, onChangeText, placeholder, secureTextEntry, icon}) => {
+const Input = ({keyboardType, value, onChangeText, placeholder, secureTextEntry, icon, editable, multiline, textArea, maxLength}) => {
   return (
-    <View style={styles.inputWrapper}>
+    <View style={[styles.inputWrapper, textArea ? { height: 150, alignItems: 'flex-start' } : {alignItems:'center'}]}>
         {icon}
         <TextInput
             keyboardType={keyboardType}
@@ -13,6 +13,9 @@ const Input = ({keyboardType, value, onChangeText, placeholder, secureTextEntry,
             placeholder={placeholder}
             secureTextEntry={secureTextEntry}
             style={styles.inputTextStyles}
+            editable={editable}
+            multiline={multiline}
+            maxLength={maxLength}
         />
     </View>
   );
@@ -29,7 +32,6 @@ const styles = StyleSheet.create({
         paddingHorizontal: 10,
         marginBottom: 10,
         flexDirection: 'row',
-        alignItems: 'center',
     },
     inputTextStyles: {
         width: '100%',

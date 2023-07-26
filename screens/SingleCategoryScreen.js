@@ -1,10 +1,13 @@
-import { ScrollView, StyleSheet, Text, TextInput, View } from 'react-native'
+import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import React from 'react'
 import MiniButton from '../components/MiniButton';
 import colors from '../assets/colors/colors';
 import { Feather, Ionicons } from '@expo/vector-icons';
 import { useState } from 'react';
 import Button from '../components/Button';
+import DateTimePicker from '@react-native-community/datetimepicker';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import Input from '../components/Input';
 
 const SingleCategoryScreen = ({ route, navigation }) => {
     const { cat } = route.params;
@@ -12,18 +15,57 @@ const SingleCategoryScreen = ({ route, navigation }) => {
     const [date, setDate] = useState('');
     const [address, setAddress] = useState('');
     const [note, setNote] = useState('');
+    const [showDatePicker, setShowDatePicker] = useState(false);
 
     const handleGoBack = () => {
         navigation.goBack();
     }
 
     const handleCalendar = () => {
-        console.log('calendar')
+        setShowDatePicker(true);
     }
 
-    const handleBooking = () => {
+    const handleAddress = async () => {
+        try {
+            const log_data_string = await AsyncStorage.getItem('log_data');
+    
+            if (log_data_string !== null) {
+                const log_data = JSON.parse(log_data_string);
+    
+                if (log_data.log_status === undefined || log_data.log_status === false) {
+                    navigation.navigate('Register Screen')
+                } else {
+                    setAddress(log_data.log_userAddress)
+                    console.log('Already Registered');
+                }
+            } else {
+                navigation.navigate('Register Screen')
+            }
+        } catch (error) {
+            // Handle AsyncStorage retrieval errors here
+            console.error('Error retrieving log_data:', error);
+        }
+    };
+    
+
+    const handleBooking = async () => {
         console.log('booking')
+        const asd = await AsyncStorage.removeItem('log_data')
+        console.log('asd', asd)
     }
+
+    const handleDateChange = (event, selectedDate) => {
+        const currentDate = selectedDate || date;
+        setShowDatePicker(false);
+        setDate(formatDate(currentDate));
+    };
+
+    const formatDate = (date) => {
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, "0");
+        const day = String(date.getDate()).padStart(2, "0");
+        return `${year}-${month}-${day}`;
+    };
 
     return (
         <View style={styles.container}>
@@ -39,46 +81,38 @@ const SingleCategoryScreen = ({ route, navigation }) => {
                 <ScrollView showsVerticalScrollIndicator={false}>
                     <View style={styles.formGroupWrapper}>
                         <Text style={styles.formLabelStyles}>Service required on</Text>
-                        <View style={styles.inputWrapper}>
-                            <Feather name="calendar" size={24} color={colors.gray} />
-                            <TextInput
-                                keyboardType={'default'}
+                        <TouchableOpacity onPress={handleCalendar}>
+                            <Input
                                 value={date}
-                                onPressIn={handleCalendar}
-                                placeholder={'Enter Your Date'}
-                                style={styles.inputTextStyles}
+                                placeholder={'Select the Date'}
+                                icon={<Feather name="calendar" size={24} color={colors.gray} />}
+                                editable={false}
                             />
-                        </View>
+                        </TouchableOpacity>
                     </View>
                     <View style={styles.formGroupWrapper}>
                         <Text style={styles.formLabelStyles}>Service required at</Text>
-                        <View style={[styles.inputWrapper, { height: 100 }]}>
-                            <Feather name="map-pin" size={24} color={colors.gray} />
-                            <TextInput
-                                keyboardType={'default'}
+                        <TouchableOpacity onPress={handleAddress}>
+                            <Input
                                 value={address}
-                                onChangeText={(text) => setAddress(text)}
                                 placeholder={'Enter Your Address'}
-                                secureTextEntry={false}
-                                style={styles.inputTextStyles}
+                                icon={<Feather name="map-pin" size={24} color={colors.gray} />}
+                                editable={false}
                                 multiline={true}
                             />
-                        </View>
+                        </TouchableOpacity>
                     </View>
                     <View style={styles.formGroupWrapper}>
                         <Text style={styles.formLabelStyles}>Additional Details. If any.</Text>
-                        <View style={[styles.inputWrapper, { height: 150 }]}>
-                            <Feather name="pen-tool" size={24} color={colors.gray} />
-                            <TextInput
-                                keyboardType={'default'}
-                                value={note}
-                                onChangeText={(text) => setNote(text)}
-                                placeholder={'Enter Your Note'}
-                                secureTextEntry={false}
-                                style={styles.inputTextStyles}
-                                multiline={true}
-                            />
-                        </View>
+                        <Input
+                            keyboardType={'default'}
+                            value={note}
+                            onChangeText={(text) => setNote(text)}
+                            placeholder={'Enter Your Note'}
+                            icon={<Feather name="pen-tool" size={24} color={colors.gray} />}
+                            multiline={true}
+                            textArea={true}
+                        />
                     </View>
                 </ScrollView>
                 <View>
@@ -95,6 +129,15 @@ const SingleCategoryScreen = ({ route, navigation }) => {
                     </View>
                 </View>
             </View>
+            {showDatePicker && (
+                <DateTimePicker
+                    testID="datePicker"
+                    value={date ? new Date(date) : new Date()}
+                    mode="date"
+                    display="default"
+                    onChange={handleDateChange}
+                />
+            )}
         </View>
     )
 }
@@ -131,22 +174,6 @@ const styles = StyleSheet.create({
         color: colors.textDark,
         marginBottom: 5,
         marginLeft: 2,
-    },
-    inputWrapper: {
-        borderWidth: 1,
-        borderColor: colors.border,
-        borderRadius: 10,
-        paddingVertical: 10,
-        paddingHorizontal: 10,
-        marginBottom: 10,
-        flexDirection: 'row',
-        alignItems: 'flex-start',
-    },
-    inputTextStyles: {
-        width: '100%',
-        fontFamily: 'ms-regular',
-        marginLeft: 10,
-        paddingRight: 10,
     },
     bottomTextStyles: {
         fontFamily: 'ms-regular',
