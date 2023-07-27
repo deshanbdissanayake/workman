@@ -1,4 +1,4 @@
-const getCategories = async () => {
+/*const getCategories = async () => {
   const categories = [
     {
       id: 1, 
@@ -62,6 +62,20 @@ const getCategories = async () => {
     },
   ]
   return categories;
+}*/
+
+const getCategories = async () => {
+  const url = 'https://jobs2.introps.com/App_api/get_all_categories';
+  let result = null;
+  try{
+    const response = await fetch(url);
+    const data = await response.json();
+    result = data;
+  }catch(e){
+    console.log('something went wrong getting categories', e)
+  }finally{
+    return result;
+  }
 }
 
 const getLatestStories = async () => {

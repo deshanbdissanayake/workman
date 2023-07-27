@@ -10,10 +10,10 @@ const CardCategory = ({id, img, name , func}) => {
         onPress={func}
     >
         <Image
-        style={styles.categoryItemImage}
-        source={img}
+            style={ styles.categoryItemImage }
+            source={ img }
         />
-        <Text style={styles.categoryItemTitle}>{name}</Text>
+        <Text numberOfLines={2} style={styles.categoryItemTitle}>{name}</Text>
     </TouchableOpacity>
   )
 }
@@ -23,9 +23,11 @@ export default CardCategory
 const styles = StyleSheet.create({
     categoryItem: {
         backgroundColor: colors.white,
+        justifyContent: 'center',
         alignItems: 'center',
         padding: 10,
-        width: '30%',
+        width: 100,
+        height: 100,
         borderRadius: 5,
         marginBottom: 10,
     },
@@ -39,5 +41,6 @@ const styles = StyleSheet.create({
         overflow: 'hidden',
         fontFamily: 'ms-regular',
         fontSize: 12,
+        textAlign: 'center',
     },
 })

@@ -10,8 +10,9 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import Input from '../components/Input';
 
 const SingleCategoryScreen = ({ route, navigation }) => {
-    const { cat } = route.params;
+    const { prof } = route.params;
 
+    const [profId, setProfId] = useState(prof.prof_id);
     const [date, setDate] = useState('');
     const [address, setAddress] = useState('');
     const [note, setNote] = useState('');
@@ -50,8 +51,8 @@ const SingleCategoryScreen = ({ route, navigation }) => {
 
     const handleBooking = async () => {
         console.log('booking')
-        const asd = await AsyncStorage.removeItem('log_data')
-        console.log('asd', asd)
+        //const asd = await AsyncStorage.removeItem('log_data')
+        //console.log('asd', asd)
     }
 
     const handleDateChange = (event, selectedDate) => {
@@ -75,7 +76,7 @@ const SingleCategoryScreen = ({ route, navigation }) => {
                     func={handleGoBack}
                     content={<Ionicons name="arrow-back-outline" size={24} color={colors.textDark} />}
                 />
-                <Text style={styles.titleStyles}>{cat.name}</Text>
+                <Text style={styles.titleStyles}>{prof.prof_name}</Text>
             </View>
             <View style={styles.formWrapper}>
                 <ScrollView showsVerticalScrollIndicator={false}>

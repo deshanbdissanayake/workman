@@ -36,7 +36,7 @@ const Header = ({name}) => {
 
 const styles = StyleSheet.create({
     container : {
-        height: 60,
+        height: 70,
         backgroundColor: colors.bgDark,
         flexDirection: 'row',
         justifyContent: 'space-between',
