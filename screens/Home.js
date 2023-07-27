@@ -114,13 +114,12 @@ const Home = () => {
                                 >
                                     {slides.map((slide, index) => (
                                         <View key={index} style={styles.slide}>
-                                            <ImageBackground
-                                                source={slide.image}
-                                                style={styles.imageBackground}
-                                            >
-                                                <Text style={styles.title}>{slide.title}</Text>
-                                                <Text style={styles.subTitle}>{slide.subTitle}</Text>
-                                            </ImageBackground>
+                                              <Image
+                                                  source={{ uri : slide.image }}
+                                                  style={styles.imageBackground}
+                                              />
+                                              <Text numberOfLines={2} style={styles.title}>{slide.title}</Text>
+                                              <Text numberOfLines={2} style={styles.subTitle}>{slide.sub_title}</Text>
                                         </View>
                                     ))}
                                 </Swiper>
@@ -159,12 +158,12 @@ const Home = () => {
                         </View>
 
                         <View style={styles.latestWrapper}>
-                            <Text style={styles.latestTitle}>Latest Items</Text>
+                            <Text style={styles.latestTitle}>Latest Stories</Text>
                             {latestStories && (
                                 <FlatList
                                     data={latestStories}
                                     renderItem={renderLatestStory}
-                                    keyExtractor={(item) => item.id.toString()}
+                                    keyExtractor={(item) => item.str_id.toString()}
                                     horizontal
                                     showsHorizontalScrollIndicator={false}
                                 />
@@ -195,32 +194,43 @@ const styles = StyleSheet.create({
         flex: 1,
         borderRadius: 10,
         overflow: 'hidden',
+        borderWidth: 1,
+        borderColor: colors.border,
     },
     imageBackground: {
         flex: 1,
         width: '100%',
-        height: '100%',
+        height: 200,
         resizeMode: 'cover',
         justifyContent: 'center',
         alignItems: 'center',
+        opacity: 0.4,
     },
     title: {
+        position:'absolute',
+        top: 10,
+        left: 0,
+        right: 0,
+        paddingHorizontal: 10,
         fontFamily: 'ms-bold',
-        fontSize: 20,
-        color: colors.white,
+        fontSize: 16,
+        color: colors.textDark,
         marginBottom: 5,
-        textShadowColor: 'rgba(0, 0, 0, 0.7)',
-        textShadowOffset: { width: 1, height: 1 },
-        textShadowRadius: 3,
+        textAlign: 'center',
+        opacity: 1,
     },
     subTitle: {
+        position:'absolute',
+        top: 55,
+        left: 0,
+        right: 0,
+        paddingHorizontal: 15,
         fontFamily: 'ms-regular',
-        fontSize: 14,
-        color: colors.white,
+        fontSize: 12,
+        color: colors.textDark,
         marginBottom: 20,
-        textShadowColor: 'rgba(0, 0, 0, 0.7)',
-        textShadowOffset: { width: 1, height: 1 },
-        textShadowRadius: 3,
+        textAlign: 'center',
+        opacity: 1,
     },
     categoriesWrapper: {
         borderRadius: 8,

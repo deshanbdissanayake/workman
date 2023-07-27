@@ -8,15 +8,57 @@ import Button from '../components/Button';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Input from '../components/Input';
+import { getAreasByCityId, getCities } from '../assets/data/getData';
+import { useEffect } from 'react';
+import { Picker } from '@react-native-picker/picker';
 
 const SingleCategoryScreen = ({ route, navigation }) => {
     const { prof } = route.params;
 
-    const [profId, setProfId] = useState(prof.prof_id);
+    const profId = prof.prof_id;
+    const [userToken, setUserToken] = useState('');
+    const [phoneNumber, setPhoneNumber] = useState('');
+    
     const [date, setDate] = useState('');
-    const [address, setAddress] = useState('');
     const [note, setNote] = useState('');
+
+    const [city, setCity] = useState('');
+    const [area, setArea] = useState('');
+
     const [showDatePicker, setShowDatePicker] = useState(false);
+
+    const [dateError, setDateError] = useState(false);
+    const [phoneNumberError, setPhoneNumberError] = useState(false);
+    const [cityError, setCityError] = useState(false);
+    const [areaError, setAreaError] = useState(false);
+
+    const [cityList, setCityList] = useState(null);
+    const [areaList, setAreaList] = useState(null);
+
+    //=========================================================================================
+
+    useEffect(()=>{
+        fetchCities()
+    },[])
+
+    const fetchCities = async () => {
+        const res = await getCities(); 
+        setCityList(res);
+    }
+
+    const setCityFunc = async (cityId) => {
+        setCity(cityId);
+        fetchAreas(cityId);
+    }
+
+    const fetchAreas = async (cityId) => {
+        setArea('');
+        setAreaList(null);
+        const res = await getAreasByCityId(cityId);
+        setAreaList(res);
+    }
+
+    //=========================================================================================
 
     const handleGoBack = () => {
         navigation.goBack();
@@ -26,7 +68,7 @@ const SingleCategoryScreen = ({ route, navigation }) => {
         setShowDatePicker(true);
     }
 
-    const handleAddress = async () => {
+    const handleCheckRegistered = async () => {
         try {
             const log_data_string = await AsyncStorage.getItem('log_data');
     
@@ -36,8 +78,12 @@ const SingleCategoryScreen = ({ route, navigation }) => {
                 if (log_data.log_status === undefined || log_data.log_status === false) {
                     navigation.navigate('Register Screen')
                 } else {
-                    setAddress(log_data.log_userAddress)
-                    console.log('Already Registered');
+                    setPhoneNumber(log_data.log_userNumber);
+                    setUserToken(log_data.log_userToken);
+                    setCity(log_data.log_userCity);
+                    fetchAreas(log_data.log_userCity);
+                    setArea(log_data.log_userArea)
+                    console.log('Auto filled from AsyncStorage');
                 }
             } else {
                 navigation.navigate('Register Screen')
@@ -92,17 +138,97 @@ const SingleCategoryScreen = ({ route, navigation }) => {
                         </TouchableOpacity>
                     </View>
                     <View style={styles.formGroupWrapper}>
-                        <Text style={styles.formLabelStyles}>Service required at</Text>
-                        <TouchableOpacity onPress={handleAddress}>
+                        <Text style={styles.formLabelStyles}>Your Contact Number</Text>
+                        <TouchableOpacity onPress={handleCheckRegistered}>
                             <Input
-                                value={address}
-                                placeholder={'Enter Your Address'}
-                                icon={<Feather name="map-pin" size={24} color={colors.gray} />}
+                                value={phoneNumber}
+                                placeholder={'Enter Your Phone Number'}
+                                icon={<Ionicons name="call-outline" size={24} color={colors.gray} />}
                                 editable={false}
                                 multiline={true}
                             />
                         </TouchableOpacity>
                     </View>
+
+
+                    <View style={styles.formGroupWrapper}>
+                            <Text style={styles.formLabelStyles}>Select Your City</Text>
+                            <View style={styles.dropDownStyles}>
+                                <Picker
+                                    selectedValue={city}
+                                    onValueChange={(itemValue, itemIndex) => setCityFunc(itemValue)}
+                                >
+                                    <Picker.Item 
+                                        key={0} 
+                                        label={'Select Your City'} 
+                                        value={''} 
+                                    />
+                                    
+                                    {cityList &&
+                                    cityList.map((city) => (
+                                        <Picker.Item 
+                                            key={city.city_id} 
+                                            label={city.city} 
+                                            value={city.city_id} 
+                                        />
+                                    ))}
+                                </Picker>
+                            </View>
+                            {cityError && (
+                                <View style={styles.errorWrapper}>
+                                    <Text style={styles.errorMessage}>
+                                        Select a City!
+                                    </Text>
+                                </View>
+                            )}
+                        </View>
+
+                        <View style={styles.formGroupWrapper}>
+                            <Text style={styles.formLabelStyles}>Select Your Area</Text>
+                            <View style={styles.dropDownStyles}>
+                                <Picker
+                                    selectedValue={area}
+                                    onValueChange={(itemValue, itemIndex) => setArea(itemValue)}
+                                >
+                                    {
+                                        city ? (
+                                            <Picker.Item 
+                                                key={0} 
+                                                label={'Select Your Area'} 
+                                                value={''} 
+                                            />
+                                        ) : (
+                                            <Picker.Item 
+                                                key={0} 
+                                                label={'Select A City First'} 
+                                                value={''} 
+                                            />
+                                        )
+                                    }
+
+                                    
+                                    {
+                                        areaList &&
+                                            areaList.map((area) => (
+                                                <Picker.Item 
+                                                    key={area.area_id} 
+                                                    label={area.area} 
+                                                    value={area.area_id} 
+                                                />
+                                            ))
+                                    }
+                                </Picker>
+                            </View>
+
+                            {areaError && (
+                                <View style={styles.errorWrapper}>
+                                    <Text style={styles.errorMessage}>
+                                        Select an Area!
+                                    </Text>
+                                </View>
+                            )}
+                        </View>
+
                     <View style={styles.formGroupWrapper}>
                         <Text style={styles.formLabelStyles}>Additional Details. If any.</Text>
                         <Input
@@ -180,5 +306,11 @@ const styles = StyleSheet.create({
         fontFamily: 'ms-regular',
         fontSize: 12,
         color: colors.textDark,
-    }
+    },
+    dropDownStyles: {
+        borderWidth: 1,
+        borderColor: colors.border,
+        borderRadius: 10,
+        marginBottom: 10,
+    },
 })

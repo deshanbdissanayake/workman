@@ -1,4 +1,4 @@
-import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useEffect } from 'react'
 import MiniButton from '../components/MiniButton';
 import colors from '../assets/colors/colors';
@@ -10,6 +10,8 @@ import Input from '../components/Input';
 
 import { sendOtp, verifyNumber, saveUser, saveAsyncStorage } from '../assets/data/user';
 import { log_data } from '../assets/data/system';
+import { getAreasByCityId, getCities } from '../assets/data/getData';
+import { Picker } from '@react-native-picker/picker';
 
 const RegisterScreen = ({ navigation }) => {
 
@@ -23,6 +25,8 @@ const RegisterScreen = ({ navigation }) => {
     const [name, setName] = useState('');
     const [address, setAddress] = useState('');
     const [email, setEmail] = useState('');
+    const [city, setCity] = useState('');
+    const [area, setArea] = useState('');
 
     //errors
     const [phoneNumberError, setPhoneNumberError] = useState(false);
@@ -32,6 +36,8 @@ const RegisterScreen = ({ navigation }) => {
     const [nameError, setNameError] = useState(false);
     const [addressError, setAddressError] = useState(false);
     const [emailError, setEmailError] = useState(false);
+    const [cityError, setCityError] = useState(false);
+    const [areaError, setAreaError] = useState(false);
 
     //other states
     const [buttonLoading, setButtonLoading] = useState(false); //button get disabled while loading
@@ -42,6 +48,32 @@ const RegisterScreen = ({ navigation }) => {
     const [buttonTitle, setButtonTitle] = useState('Send OTP');
 
     const [logData, setLogData] = useState(log_data);
+
+    const [cityList, setCityList] = useState(null);
+    const [areaList, setAreaList] = useState(null);
+
+    //=========================================================================================
+
+    useEffect(()=>{
+        fetchCities()
+    },[])
+
+    const fetchCities = async () => {
+        const res = await getCities();
+        setCityList(res);
+    }
+
+    const setCityFunc = async (cityId) => {
+        setCity(cityId);
+        fetchAreas(cityId);
+    }
+
+    const fetchAreas = async (cityId) => {
+        setArea('');
+        setAreaList(null);
+        const res = await getAreasByCityId(cityId);
+        setAreaList(res);
+    }
 
     //=========================================================================================
     // handle button click
@@ -97,6 +129,22 @@ const RegisterScreen = ({ navigation }) => {
                 isValid = false;
             } else {
                 setAddressError(false);
+            }
+
+            // Validation for City
+            if (!city) {
+                setCityError(true);
+                isValid = false;
+            } else {
+                setCityError(false);
+            }
+
+            // Validation for Area
+            if (!area) {
+                setAreaError(true);
+                isValid = false;
+            } else {
+                setAreaError(false);
             }
 
             // Validation for Email
@@ -182,6 +230,8 @@ const RegisterScreen = ({ navigation }) => {
                         log_userEmail: verifyData.payload.user.email,
                         log_userWhsp: verifyData.payload.user.phone2,
                         log_userAddress: verifyData.payload.user.address,
+                        log_userCity: verifyData.payload.user.cities_city_id,
+                        log_userArea: verifyData.payload.user.areas_area_id,
                     };
 
                     // Call saveAsyncStorage and wait for it to complete
@@ -215,6 +265,8 @@ const RegisterScreen = ({ navigation }) => {
         formData.append('email', email);
         formData.append('whatsapp', whatsapp);
         formData.append('user_phone', phoneNumber);
+        formData.append('city', city);
+        formData.append('area', area);
 
         try {
         const verifyStatus = await saveUser(formData);
@@ -231,6 +283,8 @@ const RegisterScreen = ({ navigation }) => {
             log_userEmail: email,
             log_userWhsp: whatsapp,
             log_userAddress: address,
+            log_userCity: city,
+            log_userArea: area,
             };
 
             // Call saveAsyncStorage and wait for it to complete
@@ -269,8 +323,6 @@ const RegisterScreen = ({ navigation }) => {
                 />
                 <Text style={styles.titleStyles}>Register</Text>
             </View>
-
-
 
             {!phoneNumberVerified ? (
                 <View style={styles.formWrapper}>
@@ -357,7 +409,7 @@ const RegisterScreen = ({ navigation }) => {
                                 onChangeText={(text) => setWhatsapp(text)}
                                 placeholder={'Ex: 71xxxxxxx'}
                                 secureTextEntry={false}
-                                icon={<Ionicons name="call-outline" size={24} color={colors.gray} />}
+                                icon={<Ionicons name="logo-whatsapp" size={24} color={colors.gray} />}
                                 editable={true}
                                 maxLength={9}
                             />
@@ -416,6 +468,84 @@ const RegisterScreen = ({ navigation }) => {
                         </View>
 
                         <View style={styles.formGroup}>
+                            <Text style={styles.formLabelStyles}>Select Your City</Text>
+                            <View style={styles.dropDownStyles}>
+                                <Picker
+                                    selectedValue={city}
+                                    onValueChange={(itemValue, itemIndex) => setCityFunc(itemValue)}
+                                >
+                                    <Picker.Item 
+                                        key={0} 
+                                        label={'Select Your City'} 
+                                        value={''} 
+                                    />
+                                    
+                                    {cityList &&
+                                    cityList.map((city) => (
+                                        <Picker.Item 
+                                            key={city.city_id} 
+                                            label={city.city} 
+                                            value={city.city_id} 
+                                        />
+                                    ))}
+                                </Picker>
+                            </View>
+                            {cityError && (
+                                <View style={styles.errorWrapper}>
+                                    <Text style={styles.errorMessage}>
+                                        Select a City!
+                                    </Text>
+                                </View>
+                            )}
+                        </View>
+
+                        <View style={styles.formGroup}>
+                            <Text style={styles.formLabelStyles}>Select Your Area</Text>
+                            <View style={styles.dropDownStyles}>
+                                <Picker
+                                    selectedValue={area}
+                                    onValueChange={(itemValue, itemIndex) => setArea(itemValue)}
+                                >
+                                    {
+                                        city ? (
+                                            <Picker.Item 
+                                                key={0} 
+                                                label={'Select Your Area'} 
+                                                value={''} 
+                                            />
+                                        ) : (
+                                            <Picker.Item 
+                                                key={0} 
+                                                label={'Select A City First'} 
+                                                value={''} 
+                                            />
+                                        )
+                                    }
+
+                                    
+                                    {
+                                        areaList &&
+                                            areaList.map((area) => (
+                                                <Picker.Item 
+                                                    key={area.area_id} 
+                                                    label={area.area} 
+                                                    value={area.area_id} 
+                                                />
+                                            ))
+                                    }
+                                </Picker>
+                            </View>
+
+                            {areaError && (
+                                <View style={styles.errorWrapper}>
+                                    <Text style={styles.errorMessage}>
+                                        Select an Area!
+                                    </Text>
+                                </View>
+                            )}
+                        </View>
+
+                        <View style={styles.formGroup}>
                             <Text style={styles.formLabelStyles}>Enter Your Address</Text>    
                             <Input
                                 keyboardType={'default'}
@@ -456,11 +586,13 @@ const RegisterScreen = ({ navigation }) => {
                         />
                     )}
 
-                    {showResend && (
+                {!phoneNumberVerified && 
+                    showResend && (
                         <TouchableOpacity onPress={resendButtonClick}>
                             <Text style={styles.resendButton}>Resend OTP</Text>
                         </TouchableOpacity>
-                    )}
+                    )
+                }
                 </View>
             </View>
 
@@ -508,6 +640,12 @@ const styles = StyleSheet.create({
         marginTop: 20,
         textDecorationLine: 'underline',
         alignSelf: 'center',
+    },
+    dropDownStyles: {
+        borderWidth: 1,
+        borderColor: colors.border,
+        borderRadius: 10,
+        marginBottom: 10,
     },
 
     //=========================================================

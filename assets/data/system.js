@@ -11,6 +11,8 @@ const log_data = {
     log_userEmail : '',
     log_userWhsp : '',
     log_userAddress : '',
+    log_userCity : '',
+    log_userArea : '',
 }
 
 

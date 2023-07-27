@@ -6,16 +6,16 @@ import { Ionicons } from '@expo/vector-icons'
 const CardLatestStory = ({ item }) => {
   return (
     <TouchableOpacity style={styles.latestItem} key={item.id}>
-      <Image style={styles.latestItemImage} source={item.image} />
+      <Image style={styles.latestItemImage} source={{ uri : item.image }} />
       <View style={styles.latestItemText}>
         <View style={styles.iconWrapper}>
           <Ionicons name="calendar" size={16} color={colors.secondary} />
-          <Text style={styles.iconText}>{item.date}</Text>
+          <Text style={styles.iconText}>{item.c_date}</Text>
         </View>
         <Text style={styles.latestItemTitle}>{item.title}</Text>
         <View style={styles.iconWrapper}>
           <Ionicons name="location" size={16} color={colors.secondary} />
-          <Text style={styles.iconText}>{item.place}</Text>
+          <Text style={styles.iconText}>{item.city}</Text>
         </View>
       </View>
     </TouchableOpacity>
