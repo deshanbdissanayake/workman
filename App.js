@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { View, Keyboard, StatusBar, StyleSheet } from 'react-native';
+import { AuthProvider } from './context/AuthContext';
 
 // Other Imports
 import AppNav from './navigation/AppNav';
@@ -31,15 +32,17 @@ const App = () => {
       'pop-bold': require('./assets/fonts/poppins/Poppins-Bold.ttf'),
     }); 
 
-    if (!fontsLoaded) {
+    if (!fontsLoaded ) {
       return <SplashScreen/>
     }
 
     return (
-          <View style={styles.container}>
-            <StatusBar backgroundColor={colors.bgDark} barStyle="light-content" />
-            <AppNav />
-          </View>
+      <AuthProvider>
+        <View style={styles.container}>
+          <StatusBar backgroundColor={colors.bgDark} barStyle="light-content" />
+          <AppNav />
+        </View>
+      </AuthProvider>
     );
 }
 

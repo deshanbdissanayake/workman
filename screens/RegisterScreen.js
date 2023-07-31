@@ -1,5 +1,5 @@
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React, { useEffect } from 'react'
+import React, { useEffect, useContext } from 'react'
 import MiniButton from '../components/MiniButton';
 import colors from '../assets/colors/colors';
 import { Entypo, Feather, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
@@ -12,8 +12,10 @@ import { sendOtp, verifyNumber, saveUser, saveAsyncStorage } from '../assets/dat
 import { log_data } from '../assets/data/system';
 import { getAreasByCityId, getCities } from '../assets/data/getData';
 import { Picker } from '@react-native-picker/picker';
+import AuthContext from '../context/AuthContext';
 
 const RegisterScreen = ({ navigation }) => {
+    const { login } = useContext(AuthContext)
 
     //========================================================================================= 
     //form states
@@ -236,6 +238,7 @@ const RegisterScreen = ({ navigation }) => {
 
                     // Call saveAsyncStorage and wait for it to complete
                     await saveAsyncStorage(updatedLogData);
+                    await login();
 
                     //navigate back to form
                     navigation.goBack();
@@ -269,36 +272,37 @@ const RegisterScreen = ({ navigation }) => {
         formData.append('area', area);
 
         try {
-        const verifyStatus = await saveUser(formData);
-        if (verifyStatus.stt === 'ok') {
-            console.log('User saved');
+            const verifyStatus = await saveUser(formData);
+            if (verifyStatus.stt === 'ok') {
+                console.log('User saved');
 
-            // Update log data
-            const updatedLogData = {
-            ...logData,
-            log_status: true,
-            log_userToken: userToken,
-            log_userNumber: phoneNumber,
-            log_userName: name,
-            log_userEmail: email,
-            log_userWhsp: whatsapp,
-            log_userAddress: address,
-            log_userCity: city,
-            log_userArea: area,
-            };
+                // Update log data
+                const updatedLogData = {
+                ...logData,
+                log_status: true,
+                log_userToken: userToken,
+                log_userNumber: phoneNumber,
+                log_userName: name,
+                log_userEmail: email,
+                log_userWhsp: whatsapp,
+                log_userAddress: address,
+                log_userCity: city,
+                log_userArea: area,
+                };
 
-            // Call saveAsyncStorage and wait for it to complete
-            await saveAsyncStorage(updatedLogData);
+                // Call saveAsyncStorage and wait for it to complete
+                await saveAsyncStorage(updatedLogData);
+                await login();
 
-            navigation.goBack();
-            
-        }else{
-            console.log(verifyStatus)
-        }
+                navigation.goBack();
+                
+            }else{
+                console.log(verifyStatus)
+            }
         } catch (error) {
-        console.error('Verification error:', error);
+            console.error('Verification error:', error);
         } finally {
-        setButtonLoading(false); // Disable loading state
+            setButtonLoading(false); // Disable loading state
         }
     };
 

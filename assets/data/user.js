@@ -1,4 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { log_data } from './system';
 
 // After clicking the Send OTP button
 const sendOtp = async (phoneNumber) => {
@@ -63,46 +64,35 @@ const saveUser = async (formData) => {
   }
 };
 
-//validate user
-const validateUser = async (userNumber, userToken) =>{
-
-  try {
-    const url = 'https://jobs2.introps.com/App_api/userValidity';
-  
-    const headers = {
-      'userToken': userToken,
-      'userPhone': userNumber
-    };
-  
-    const options = {
-      method: 'GET',
-      headers: headers,
-    };
-  
-    const response = await fetch(url, options);
-    const json = await response.json();
-
-    // Check if the response is 0
-    if (json == 0) {
-      return false;
-    } else {
-      return true;
-    }
-  } catch (error) {
-    console.error(error);
-    return false;
-  }
-  
-}
-
 const saveAsyncStorage = async (asyncData) => {
   try {
     const logDataString = JSON.stringify(asyncData);
     await AsyncStorage.setItem('log_data', logDataString);
-    
   } catch (error) {
     console.error('Error saving log_data to AsyncStorage:', error);
   }
 };
 
-export { sendOtp, verifyNumber, saveUser, validateUser, saveAsyncStorage };
+const removeAsyncStorage = async () => {
+  try {
+    await AsyncStorage.removeItem('log_data');
+  } catch (error) {
+    console.error('Error removing from log_data AsyncStorage:', error);
+  }
+}
+
+const getDataAsyncStorage = async () => {
+  let logData = log_data;
+  try{ 
+    const ld = await AsyncStorage.getItem('log_data');
+    if(ld !== null){
+      logData = await JSON.parse(ld);
+    }
+  } catch (error) {
+    console.error('Error getting from log_data AsyncStorage:', error);
+  } finally {
+    return logData;
+  }
+}
+
+export { sendOtp, verifyNumber, saveUser, saveAsyncStorage, removeAsyncStorage, getDataAsyncStorage };

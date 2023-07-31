@@ -4,49 +4,24 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { StatusBar } from 'react-native';
 import colors from '../assets/colors/colors';
 
-import Home from '../screens/Home';
-import Welcome from '../screens/Welcome';
+import DrawerNav from './DrawerNav';
+import { useContext } from 'react';
+import AuthContext from '../context/AuthContext';
 import SplashScreen from '../screens/SplashScreen';
-import SingleCategoryScreen from '../screens/SingleCategoryScreen';
-import RegisterScreen from '../screens/RegisterScreen';
-import CategoryList from '../screens/CategoryList';
 
 const Stack = createStackNavigator();
 
 const AppNav = () => {
+  const { isLoading } = useContext(AuthContext);
+
+  if(isLoading){
+    <SplashScreen/>
+  }
+
   return (
     <NavigationContainer>
       <StatusBar backgroundColor={colors.bgDark} barStyle="light-content" />
-      <Stack.Navigator>
-        <Stack.Screen
-          name="Home"
-          component={Home}
-          options={{
-            headerShown: false,
-          }}
-        />
-        <Stack.Screen
-          name="Single Screen"
-          component={SingleCategoryScreen}
-          options={{
-            headerShown: false,
-          }}
-        />
-        <Stack.Screen
-          name="Category List"
-          component={CategoryList}
-          options={{
-            headerShown: false,
-          }}
-        />
-        <Stack.Screen
-          name="Register Screen"
-          component={RegisterScreen}
-          options={{
-            headerShown: false,
-          }}
-        />
-      </Stack.Navigator>
+      <DrawerNav/>
     </NavigationContainer>
   );
 };

@@ -1,37 +1,42 @@
 import React from 'react';
 import { Text, View, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
+import { DrawerActions } from '@react-navigation/native';
 
 import colors from '../assets/colors/colors'; 
 
-const handleDrawer = () => {
-    console.log('handle drawer')
-}
-
-const handleUser = () => {
-    console.log('handle user')
-}
-
 const Header = ({name}) => {
-  return (
-    <View style={styles.container}>
-      <View style={styles.leftContainer}>
-        <TouchableOpacity onPress={handleDrawer}>
-            <View style={styles.buttonClickAreaStyles}>
-                <Ionicons name="menu" size={24} color={colors.textLight} />
+    const navigation = useNavigation();
+
+    const openDrawer = () => {
+        console.log('handle drawer')
+        navigation.dispatch(DrawerActions.openDrawer());
+    }
+    
+    const handleUser = () => {
+        console.log('handle user')
+    }
+
+    return (
+        <View style={styles.container}>
+            <View style={styles.leftContainer}>
+                <TouchableOpacity onPress={openDrawer}>
+                    <View style={styles.buttonClickAreaStyles}>
+                        <Ionicons name="menu" size={24} color={colors.textLight} />
+                    </View>
+                </TouchableOpacity>
+                <Text style={styles.headerTextStyles}>{name}</Text>
             </View>
-        </TouchableOpacity>
-        <Text style={styles.headerTextStyles}>{name}</Text>
-      </View>
-      <View style={styles.rightContainer}>
-        <TouchableOpacity onPress={handleUser}>
-            <View style={styles.buttonClickAreaStyles}>
-                <Ionicons name="person" size={24} color={colors.textLight} />
+            <View style={styles.rightContainer}>
+                <TouchableOpacity onPress={handleUser}>
+                    <View style={styles.buttonClickAreaStyles}>
+                        <Ionicons name="person" size={24} color={colors.textLight} />
+                    </View>
+                </TouchableOpacity>
             </View>
-        </TouchableOpacity>
-      </View>
-    </View>
-  );
+        </View>
+    );
 };
 
 const styles = StyleSheet.create({
