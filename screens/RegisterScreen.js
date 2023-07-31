@@ -162,8 +162,6 @@ const RegisterScreen = ({ navigation }) => {
 
             // If all fields are valid, proceed with save details
             if (isValid) {
-                setButtonLoading(true);
-
                 //save user data
                 saveUserFunc();
             }
@@ -260,7 +258,8 @@ const RegisterScreen = ({ navigation }) => {
 
     //save user
     const saveUserFunc = async () => {
-
+        setButtonLoading(true);
+        
         const formData = new FormData();
 
         formData.append('name', name);

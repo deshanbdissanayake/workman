@@ -1,3 +1,5 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
 const getCategories = async () => {
   const url = 'https://jobs2.introps.com/App_api/get_all_categories';
   let result = null;
@@ -68,6 +70,31 @@ const getAreasByCityId = async (cityId) => {
   }
 }
 
+const getMyBookings = async () => {
+  const data = await AsyncStorage.getItem('log_data');
+  let result = null;
+
+  if (!data || data === '') {
+    console.log('log_data does not exist in AsyncStorage (saveData.js)');
+    return result;
+  } else {
+    const logData = JSON.parse(data);
+    const userToken = logData.log_userToken;
+
+    const url = `https://jobs2.introps.com/App_api/get_my_bookings/${userToken}`;
+    
+    try {
+      const response = await fetch(url);
+      const getData = await response.json();
+      result = getData;
+    } catch (e) {
+      console.log('something went wrong getting my bookings', e);
+    } finally {
+      return result;
+    }
+
+  }
+};
 
 
-export { getCategories, getLatestStories, getSlides, getCities, getAreasByCityId };
+export { getCategories, getLatestStories, getSlides, getCities, getAreasByCityId, getMyBookings };

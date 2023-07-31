@@ -95,7 +95,7 @@ const styles = StyleSheet.create({
   okBtnStyles : {
     flex: 1,
     borderBottomRightRadius: 10,
-    backgroundColor: colors.primary,
+    backgroundColor: colors.primaryDark,
     justifyContent: 'center',
     alignItems: 'center',
   },

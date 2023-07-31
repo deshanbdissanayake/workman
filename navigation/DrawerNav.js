@@ -20,6 +20,7 @@ import { Feather, FontAwesome5, Ionicons } from '@expo/vector-icons';
 import HomeNav from './HomeNav';
 import AuthContext from '../context/AuthContext';
 import RegisterScreen from '../screens/RegisterScreen';
+import { getMyBookings } from '../assets/data/getData';
 
 const Drawer = createDrawerNavigator();
 
@@ -126,6 +127,21 @@ const DrawerNav = () => {
           drawerIcon: ({ focused, color, size }) => (
             <Feather 
                 name={focused ? 'user-plus' : 'user'}
+                size={size} 
+                color={color}
+            />
+          ),
+          headerShown: false,
+        }}
+      />
+      <Drawer.Screen
+        name="getMyBookings"
+        component={getMyBookings}
+        options={{
+          drawerLabel: 'My Bookings',
+          drawerIcon: ({ focused, color, size }) => (
+            <Ionicons 
+                name={focused ? 'list-circle' : 'list-circle-outline'}
                 size={size} 
                 color={color}
             />
