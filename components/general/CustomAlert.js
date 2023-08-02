@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View, Animated } from 'react-native'
 import React, { useEffect, useRef } from 'react'
 import { AntDesign } from '@expo/vector-icons'
-import colors from '../assets/colors/colors';
+import colors from '../../assets/colors/colors';
 
 const CustomAlert = ({ type, msg }) => {
     const fadeAnim = useRef(new Animated.Value(0)).current;

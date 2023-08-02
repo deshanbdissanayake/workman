@@ -1,13 +1,13 @@
 import { ActivityIndicator, ScrollView, StyleSheet, Text, View } from "react-native";
 import React, { useContext, useState, useEffect } from "react";
-import Input from "../components/Input";
-import Button from '../components/Button';
+import Input from "../components/general/Input";
+import Button from '../components/general/Button';
 import { AntDesign, Ionicons } from "@expo/vector-icons";
 import colors from "../assets/colors/colors";
 import Gif from "../components/Gif";
-import Introps from "../components/Introps";
+import Introps from "../components/app/Introps";
 import { AuthContext } from "../context/AuthContext";
-import CustomAlert from "../components/CustomAlert";
+import CustomAlert from "../components/app/CustomAlert";
 
 const Login = () => {
     const [userName, setUserName] = useState('');

@@ -13,7 +13,7 @@ const colors = {
 
     white : '#FFFFFF',
     black : '#000000',
-    gray : '#b2b2b2', 
+    gray : '#d6d6d6', 
     disabled: '#d6d4d4',
     border : '#d0d0d0',
 

@@ -1,12 +1,12 @@
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useEffect, useContext } from 'react'
-import MiniButton from '../components/MiniButton';
+import MiniButton from '../components/general/MiniButton';
 import colors from '../assets/colors/colors';
 import { Entypo, Feather, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useState } from 'react';
-import Button from '../components/Button';
+import Button from '../components/general/Button';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import Input from '../components/Input';
+import Input from '../components/general/Input';
 
 import { sendOtp, verifyNumber, saveUser, saveAsyncStorage } from '../assets/data/user';
 import { log_data } from '../assets/data/system';

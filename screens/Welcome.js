@@ -1,6 +1,6 @@
 import { Image, StyleSheet, Text, View } from 'react-native'
 import React, { useState } from 'react'
-import Button from '../components/Button'
+import Button from '../components/general/Button'
 
 import colors from '../assets/colors/colors'
 

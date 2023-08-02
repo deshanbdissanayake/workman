@@ -4,10 +4,10 @@ import Swiper from 'react-native-swiper';
 import { Ionicons } from '@expo/vector-icons';
 
 import colors from '../assets/colors/colors';
-import Header from '../components/Header';
+import Header from '../components/app/Header';
 import { getCategories, getLatestStories, getSlides } from '../assets/data/getData';
-import CardLatestStory from '../components/CardLatestStory';
-import CardCategory from '../components/CardCategory';
+import CardLatestStory from '../components/app/CardLatestStory';
+import CardCategory from '../components/app/CardCategory';
 import { useNavigation } from '@react-navigation/native';
 
 const Home = () => {
@@ -34,7 +34,11 @@ const Home = () => {
 
     const fetchSlides = async () => {
         const sli = await getSlides();
-        setSlides(sli);
+        if(sli.length == 0){
+            setSlides(null);
+        }else{
+            setSlides(sli);
+        }
     };
 
     const fetchCategories = async () => {
@@ -52,19 +56,25 @@ const Home = () => {
 
     const fetchLatestStories = async () => {
         const ls = await getLatestStories();
-        setLatestStories(ls);
+        if(ls.length == 0){
+            setLatestStories(null);
+        }else{
+            setLatestStories(ls);
+        }
     };
 
     useEffect(() => {
-        const timer = setInterval(() => {
-            if (swiperRef.current && swiperRef.current.state.index < slides.length - 1) {
-                swiperRef.current.scrollBy(1);
-            } else {
-                swiperRef.current.scrollBy(-slides.length + 1);
-            }
-        }, 3000);
-
-        return () => clearInterval(timer);
+        if(slides !== null){
+            const timer = setInterval(() => {
+                if (swiperRef.current && swiperRef.current.state.index < slides.length - 1) {
+                    swiperRef.current.scrollBy(1);
+                } else {
+                    swiperRef.current.scrollBy(-slides.length + 1);
+                }
+            }, 5000);
+    
+            return () => clearInterval(timer);
+        }
     }, [slides]);
 
     const handleClickCategory = (prof) => {

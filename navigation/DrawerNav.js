@@ -20,7 +20,7 @@ import { Feather, FontAwesome5, Ionicons } from '@expo/vector-icons';
 import HomeNav from './HomeNav';
 import AuthContext from '../context/AuthContext';
 import RegisterScreen from '../screens/RegisterScreen';
-import { getMyBookings } from '../assets/data/getData';
+import MyBookingNav from './MyBookingNav';
 
 const Drawer = createDrawerNavigator();
 
@@ -135,8 +135,8 @@ const DrawerNav = () => {
         }}
       />
       <Drawer.Screen
-        name="getMyBookings"
-        component={getMyBookings}
+        name="MyBookingNav"
+        component={MyBookingNav}
         options={{
           drawerLabel: 'My Bookings',
           drawerIcon: ({ focused, color, size }) => (

@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View, TouchableOpacity, ActivityIndicator } from 'react-native'
 import React from 'react'
-import colors from '../assets/colors/colors'
+import colors from '../../assets/colors/colors'
 
 const Button = ({bgColor, txtColor, text, func, bdr='', loading=false}) => {
   return (

@@ -2,9 +2,9 @@ import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import React from 'react';
 import { Ionicons } from '@expo/vector-icons';
 
-import MiniButton from '../components/MiniButton';
+import MiniButton from '../components/general/MiniButton';
 import colors from '../assets/colors/colors';
-import CardCategory from '../components/CardCategory';
+import CardCategory from '../components/app/CardCategory';
 
 const CategoryList = ({ route, navigation }) => {
   const { categories } = route.params;

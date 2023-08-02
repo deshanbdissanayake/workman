@@ -1,6 +1,6 @@
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
-import colors from '../assets/colors/colors'
+import colors from '../../assets/colors/colors'
 
 const CardCategory = ({id, img, name , func}) => {
   return (

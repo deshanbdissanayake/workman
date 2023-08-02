@@ -1,20 +1,20 @@
 import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import React, { useCallback } from 'react'
-import MiniButton from '../components/MiniButton';
+import MiniButton from '../components/general/MiniButton';
 import colors from '../assets/colors/colors';
 import { Entypo, Feather, Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { useState } from 'react';
-import Button from '../components/Button';
+import Button from '../components/general/Button';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import Input from '../components/Input';
+import Input from '../components/general/Input';
 import { getAreasByCityId, getCities } from '../assets/data/getData';
 import { useEffect } from 'react';
 import { Picker } from '@react-native-picker/picker';
 import { saveBookingJob } from '../assets/data/saveData';
 import { useFocusEffect } from '@react-navigation/native';
-import CustomAlert from '../components/CustomAlert'
-import CustomModal from '../components/CustomModal'
+import CustomAlert from '../components/general/CustomAlert'
+import CustomModal from '../components/general/CustomModal'
 
 const SingleCategoryScreen = ({ route, navigation }) => {
     const { prof } = route.params;

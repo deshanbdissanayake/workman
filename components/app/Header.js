@@ -4,7 +4,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { DrawerActions } from '@react-navigation/native';
 
-import colors from '../assets/colors/colors'; 
+import colors from '../../assets/colors/colors'; 
 
 const Header = ({name}) => {
     const navigation = useNavigation();
