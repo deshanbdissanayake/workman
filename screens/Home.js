@@ -136,8 +136,8 @@ const Home = () => {
                                                   source={{ uri : slide.image }}
                                                   style={styles.imageBackground}
                                               />
-                                              <Text numberOfLines={2} style={styles.title}>{slide.title}</Text>
-                                              <Text numberOfLines={2} style={styles.subTitle}>{slide.sub_title}</Text>
+                                              {/*<Text numberOfLines={2} style={styles.title}>{slide.title}</Text>
+                                              <Text numberOfLines={2} style={styles.subTitle}>{slide.sub_title}</Text>*/}
                                         </View>
                                     ))}
                                 </Swiper>
@@ -222,7 +222,7 @@ const styles = StyleSheet.create({
         resizeMode: 'cover',
         justifyContent: 'center',
         alignItems: 'center',
-        opacity: 0.4,
+        opacity: 1,
     },
     title: {
         position:'absolute',
