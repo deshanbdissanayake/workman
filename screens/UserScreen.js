@@ -5,10 +5,9 @@ import { Entypo, Ionicons } from '@expo/vector-icons';
 import colors from '../assets/colors/colors';
 import AuthContext from '../context/AuthContext';
 import { getUserData } from '../assets/data/getData';
+import NoData from '../components/app/NoData';
 
 const UserScreen = ({ navigation }) => {
-
-    const [loading, setLoading] = useState(false);
 
     const [userData, setUserData] = useState(null);
 
@@ -17,15 +16,12 @@ const UserScreen = ({ navigation }) => {
     },[])
 
     const getUserFunc = async () => {
-        setLoading(true)
         try{
             const response = await getUserData();
-            setUserData(response)
             console.log(response)
+            setUserData(response)
         } catch ( error ) {
-
-        } finally {
-            setLoading(false)
+            console.error('error getting user data', error)
         }
     }
 
@@ -44,29 +40,32 @@ const UserScreen = ({ navigation }) => {
             </View>
             <View style={styles.bottomWrapper}>
                 <Text style={styles.titleStyles}>User Settings</Text>
-
-                <ScrollView showsVerticalScrollIndicator={false}>
-                    <View style={styles.sectionWrapper}>
-                        <Image source={{ uri: userData.client_img }} style={styles.userImageStyles} />
-                        <View style={styles.userWrapper}>
-                            <View>
-                                <Text style={styles.nameStyles}>{userData.client_name}</Text>
-                            </View>
-                            <View style={styles.rowWrapper}>
-                                <Entypo name="email" size={24} color={colors.primary} />
-                                <Text style={styles.emailStyles}>{userData.email}</Text>
-                            </View>
-                            <View style={styles.rowWrapper}>
-                                <Ionicons name="call-outline" size={24} color={colors.primary} />
-                                <Text style={styles.phoneStyles}>{userData.phone1}</Text>
-                            </View>
-                            <View style={styles.rowWrapper}>
-                                <Ionicons name="logo-whatsapp" size={24} color={colors.primary} />
-                                <Text style={styles.phoneStyles}>{userData.phone2}</Text>
+                {userData === null ? (
+                    <NoData msg={'Loading...'} />
+                ) : (
+                    <ScrollView showsVerticalScrollIndicator={false}>
+                        <View style={styles.sectionWrapper}>
+                            <Image source={{ uri: userData.client_img }} style={styles.userImageStyles} />
+                            <View style={styles.userWrapper}>
+                                <View>
+                                    <Text style={styles.nameStyles}>{userData.client_name}</Text>
+                                </View>
+                                <View style={styles.rowWrapper}>
+                                    <Entypo name="email" size={24} color={colors.primary} />
+                                    <Text style={styles.emailStyles}>{userData.email}</Text>
+                                </View>
+                                <View style={styles.rowWrapper}>
+                                    <Ionicons name="call-outline" size={24} color={colors.primary} />
+                                    <Text style={styles.phoneStyles}>{userData.phone1}</Text>
+                                </View>
+                                <View style={styles.rowWrapper}>
+                                    <Ionicons name="logo-whatsapp" size={24} color={colors.primary} />
+                                    <Text style={styles.phoneStyles}>{userData.phone2}</Text>
+                                </View>
                             </View>
                         </View>
-                    </View>
-                </ScrollView>
+                    </ScrollView>
+                )}
             </View>
         </View>
     )
