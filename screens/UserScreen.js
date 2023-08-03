@@ -30,7 +30,7 @@ const UserScreen = ({ navigation }) => {
     }
 
     const handleEditClick= () => {
-        navigation.navigate('User Settings Screen');
+        navigation.navigate('User Settings Screen', { user : userData });
     }
 
     return (
@@ -75,26 +75,26 @@ const UserScreen = ({ navigation }) => {
                         <View style={styles.sectionWrapper}>
                             <View style={styles.rowWrapper}>
                                 <Entypo name="location" size={20} color={colors.primary} />
-                                <Text style={styles.textStyles}>{userData.address}</Text>
+                                <Text style={styles.textStyles}>Address: {userData.address}</Text>
                             </View>
                             <View style={styles.rowWrapper}>
                                 <MaterialIcons name="location-city" size={20} color={colors.primary} />
-                                <Text style={styles.textStyles}>{userData.city}</Text>
+                                <Text style={styles.textStyles}>City: {userData.city}</Text>
                             </View>
                             <View style={styles.rowWrapper}>
                                 <Entypo name="location-pin" size={20} color={colors.primary} />
-                                <Text style={styles.textStyles}>{userData.area}</Text>
+                                <Text style={styles.textStyles}>Area: {userData.area}</Text>
                             </View>
                         </View>
 
                         <View style={styles.sectionWrapper}>
                             <View style={styles.rowWrapper}>
                                 <FontAwesome name="calendar" size={20} color={colors.primary} />
-                                <Text style={styles.textStyles}>{userData.reg_date}</Text>
+                                <Text style={styles.textStyles}>Joined Date: {userData.reg_date}</Text>
                             </View>
                             <View style={styles.rowWrapper}>
                             <MaterialCommunityIcons name="format-list-numbered" size={20} color={colors.primary} />
-                                <Text style={styles.textStyles}>{userData.total_jobs}</Text>
+                                <Text style={styles.textStyles}>Total Jobs Completed: {userData.total_jobs}</Text>
                             </View>
                         </View>
 
@@ -106,8 +106,6 @@ const UserScreen = ({ navigation }) => {
                                 func={handleEditClick}
                             />
                         </View>
-
-
                     </ScrollView>
                 )}
             </View>
