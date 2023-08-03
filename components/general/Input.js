@@ -1,10 +1,25 @@
 import { StyleSheet, Text, TextInput, View } from "react-native";
-import React from "react";
+import React, { useRef } from "react";
 import colors from "../../assets/colors/colors";
 
-const Input = ({keyboardType, value, onChangeText, placeholder, secureTextEntry, icon, editable, multiline, textArea, maxLength}) => {
-  return (
-    <View style={[styles.inputWrapper, textArea ? { height: 150, alignItems: 'flex-start' } : {alignItems:'center'}]}>
+const Input = ({keyboardType, value, onChangeText, placeholder, secureTextEntry, icon, editable, multiline, textArea, maxLength, disabled}) => {
+    const inputRef = useRef(null);useRef
+
+    const handleInputWrapperClick = () => {
+      if (inputRef.current) {
+        inputRef.current.focus();
+      }
+    };
+  
+    return (
+    <View 
+        style={[
+            styles.inputWrapper, 
+            textArea ? { height: 150, alignItems: 'flex-start' } : {alignItems:'center'},
+            disabled && { backgroundColor: colors.disabled} 
+        ]}
+        onTouchStart={handleInputWrapperClick}
+    >
         {icon}
         <TextInput
             keyboardType={keyboardType}
@@ -12,10 +27,14 @@ const Input = ({keyboardType, value, onChangeText, placeholder, secureTextEntry,
             onChangeText={onChangeText}
             placeholder={placeholder}
             secureTextEntry={secureTextEntry}
-            style={styles.inputTextStyles}
+            style={[
+                styles.inputTextStyles, 
+                disabled && { color: colors.textGraySecondary } 
+            ]}
             editable={editable}
             multiline={multiline}
             maxLength={maxLength}
+            ref={inputRef}
         />
     </View>
   );

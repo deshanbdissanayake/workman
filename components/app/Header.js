@@ -6,16 +6,12 @@ import { DrawerActions } from '@react-navigation/native';
 
 import colors from '../../assets/colors/colors'; 
 
-const Header = ({name}) => {
+const Header = ({name, handleUser}) => {
     const navigation = useNavigation();
 
     const openDrawer = () => {
         console.log('handle drawer')
         navigation.dispatch(DrawerActions.openDrawer());
-    }
-    
-    const handleUser = () => {
-        console.log('handle user')
     }
 
     return (

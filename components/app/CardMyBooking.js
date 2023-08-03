@@ -68,6 +68,7 @@ const styles = StyleSheet.create({
     detailsWrapper: {
         flex: 1,
         marginLeft: 15,
+        justifyContent: 'space-between',
     },
     topWrapper: {
         flexDirection: 'row',
@@ -91,19 +92,22 @@ const styles = StyleSheet.create({
         marginRight: 5,
     },
     dateWrapper: {
+        flex: 2,
         marginTop: 10,
     },
     dateTextStyles: {
         fontFamily: 'ms-regular',
-        fontSize: 12,
+        fontSize: 10,
         color: colors.textGray,
     },
     bottomWrapper: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'flex-end',
+        marginBottom: 1,
     },
     statusStyles: {
+        flex: 1,
         fontFamily: 'ms-regular',
         fontSize: 12,
         color: colors.textLight,

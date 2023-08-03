@@ -127,7 +127,7 @@ const SingleBookingScreen = ({ route }) => {
                     </View>
                 </View>
 
-                    {parseInt(booking.rate) === 0 ? 
+                    {(parseInt(booking.rate) === 0 && booking.job_status === 'completed' && booking.payment_status === 'paid') ? 
                     (
                         <View style={styles.sectionWrapper}>
                             <Button 
@@ -143,7 +143,15 @@ const SingleBookingScreen = ({ route }) => {
                         <View style={styles.sectionWrapper}>
                             <View style={styles.rowWrapper}>
                                 <Text style={styles.labelStyle}>Your Rating : </Text>
-                                <View style={styles.ratingWrapper}>{renderStars(booking.rate)}</View>
+                                <View style={styles.ratingWrapper}>
+                                    {(booking.job_status === 'completed' && booking.payment_status === 'paid') ? 
+                                        (
+                                            renderStars(booking.rate)
+                                        ) : (
+                                            <Text style={styles.valueStyle}>This job isn't finished yet to rate.</Text>
+                                        )
+                                    }
+                                </View>
                             </View>
 
                             <View style={styles.rowWrapper}>
@@ -154,7 +162,6 @@ const SingleBookingScreen = ({ route }) => {
                     )
                 }
                 
-
             </ScrollView>
         </View>
     )
@@ -165,8 +172,8 @@ export default SingleBookingScreen
 const styles = StyleSheet.create({
     container : {
         flex: 1,
-        marginVertical: 20,
-        marginHorizontal: 15,
+        paddingHorizontal: 15,
+        paddingVertical: 20,
     },
     topWrapper : {
         marginBottom: 20,
@@ -213,7 +220,7 @@ const styles = StyleSheet.create({
     },
     statusStyle: status => ({
         color: colors.textLight,
-        backgroundColor: status === 'completed' ? colors.success : status === 'active' ? colors.success : 'pending' ? colors.warning : colors.danger,
+        backgroundColor: status === 'completed' ? colors.success : status === 'active' ? colors.success : status === 'paid' ? colors.success : 'pending' ? colors.warning : colors.danger,
         paddingVertical: 5,
         paddingHorizontal: 10,
         borderRadius: 5,

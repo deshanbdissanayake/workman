@@ -3,7 +3,8 @@ const colors = {
     bgDark : '#373737', //black
 
     textLight : '#f9f8f4', //gray
-    textGray : '#888888', //gray
+    textGray : '#aaaaaa', //gray
+    textGraySecondary : '#7e7e7e', //gray
     textDark : '#373737', //black
 
     primary : '#ffb900', //yellow - orange
@@ -14,7 +15,7 @@ const colors = {
     white : '#FFFFFF',
     black : '#000000',
     gray : '#d6d6d6', 
-    disabled: '#d6d4d4',
+    disabled: '#e0e0e0',
     border : '#d0d0d0',
 
     success : '#406b42',

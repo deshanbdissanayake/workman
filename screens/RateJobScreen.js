@@ -1,21 +1,84 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, ScrollView } from 'react-native';
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import colors from '../assets/colors/colors';
 import { useNavigation } from '@react-navigation/native';
 import MiniButton from '../components/general/MiniButton';
 import Input from '../components/general/Input';
 import Button from '../components/general/Button';
+import { saveJobRating } from '../assets/data/saveData';
+import CustomAlert from '../components/general/CustomAlert'
+import CustomModal from '../components/general/CustomModal'
+
 
 const RateJobScreen = ({ route }) => {
     const { booking } = route.params;
+    
     const navigation = useNavigation();
 
     const [rating, setRating] = useState(0);
     const [ratingText, setRatingText] = useState('');
 
-    const handleSubmitClick = () => {
-        console.log('add rating')
+    const [ratingError, setRatingError] = useState(false);
+    const [ratingTextError, setRatingTextError] = useState(false);
+
+    const [successMessage, setSuccessMessage] = useState({});
+    const [buttonLoading, setButtonLoading] = useState(false); //modal refresh
+
+    const handleSubmitClick = async () => {
+        let isValid = true;
+    
+        if (rating === 0) {
+            setRatingError(true);
+            isValid = false;
+        } else {
+            setRatingError(false);
+        }
+    
+        if (ratingText === '') {
+            setRatingTextError(true);
+            isValid = false;
+        } else {
+            setRatingTextError(false);
+        }
+    
+        if (isValid) {
+            submitJobRatingFunc();
+        }
+    };
+
+    const submitJobRatingFunc = async () => {
+        setButtonLoading(true);
+
+        try {
+            const formData = new FormData();
+
+            formData.append('jobId', booking.job_id);
+            formData.append('rating', rating);
+            formData.append('ratingText', ratingText);
+
+            const response = await saveJobRating(formData);
+
+            setButtonLoading(false);
+        
+            if (response.stt === 'ok') {
+                console.log('Rating saved');
+                setSuccessMessage({ type: 'success', msg: response.msg });
+            } else {
+                setSuccessMessage({ type: 'danger', msg: response.msg });
+            }
+        
+            // Show the alert for 1 second and then clear the success message
+            setTimeout(() => {
+                setSuccessMessage({});
+                navigation.popToTop();
+            }, 700);
+
+        } catch ( error ) {
+            console.error('Job Rating error RateJobScreen try');
+        } finally {
+            setButtonLoading(false);
+        }
     }
 
     const handleGoBack = () => {
@@ -65,10 +128,13 @@ const RateJobScreen = ({ route }) => {
                 <Text style={styles.titleStyles}>Rate This Job</Text>
                 <Text style={styles.subtitleStyles}>{booking.posted_date} - {booking.prof_name}</Text>
 
-                <View style={styles.formWrapper}>
+                <ScrollView style={styles.formWrapper} showsVerticalScrollIndicator={false}>
                     <View style={styles.formGroup}>
                         <Text style={styles.labelStyles}>Choose Your Rating :</Text>
                         <View style={styles.starWrapper}>{renderStars()}</View>
+                        {ratingError && (
+                            <Text style={styles.errorTextStyles}>Please Enter Your Rating</Text>
+                        )}
                     </View>
                     <View style={styles.formGroup}>
                         <Text style={styles.labelStyles}>Your Feedback About Job :</Text>
@@ -82,15 +148,32 @@ const RateJobScreen = ({ route }) => {
                             multiline={true}
                             textArea={true}
                         />
+                        {ratingTextError && (
+                            <Text style={styles.errorTextStyles}>Please Enter Your Review</Text>
+                        )}
                     </View>
-                    <Button
-                        bgColor={colors.primaryDark}
-                        txtColor={colors.textLight}
-                        text={'Add My Rating'}
-                        func={handleSubmitClick}
-                    />
-                </View>
+                    {
+                        buttonLoading ?
+                        (
+                            <Button loading={true} />
+                        )
+                        :
+                        (
+                            <Button
+                                bgColor={colors.primaryDark}
+                                txtColor={colors.textLight}
+                                text={'Add My Rating'}
+                                func={handleSubmitClick}
+                            />
+                        )
+                    }
+                </ScrollView>
             </View>
+            {Object.keys(successMessage).length > 0 && (
+                <View style={styles.alertStyles}>
+                    <CustomAlert type={successMessage.type} msg={successMessage.msg} />
+                </View>
+            )}
         </View>
     );
 };
@@ -98,8 +181,8 @@ const RateJobScreen = ({ route }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        marginVertical: 20,
-        marginHorizontal: 15,
+        paddingHorizontal: 15,
+        paddingVertical: 20,
     },
     topWrapper: {
         marginBottom: 20,
@@ -117,7 +200,7 @@ const styles = StyleSheet.create({
         marginBottom: 25,
     },
     formGroup: {
-        marginBottom: 20,
+        marginBottom: 30,
     },
     labelStyles: {
         fontFamily: 'ms-regular',
@@ -131,6 +214,25 @@ const styles = StyleSheet.create({
     },
     starStyles: {
         marginRight: 5,
+    },
+    errorTextStyles: {
+        fontFamily: 'ms-regular',
+        fontSize: 12,
+        color: colors.danger,
+        textAlign: 'left',
+        paddingLeft: 5,
+        marginTop: 5,
+    },
+    alertStyles: {
+        zIndex: 1,
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
     },
 });
 

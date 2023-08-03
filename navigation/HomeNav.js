@@ -5,6 +5,9 @@ import Home from '../screens/Home';
 import SingleCategoryScreen from '../screens/SingleCategoryScreen';
 import RegisterScreen from '../screens/RegisterScreen';
 import CategoryList from '../screens/CategoryList';
+import SingleBlogScreen from '../screens/SingleBlogScreen';
+import UserSettingsScreen from '../screens/UserSettingsScreen';
+import UserScreen from '../screens/UserScreen';
 
 const Stack = createStackNavigator();
 
@@ -35,6 +38,27 @@ const HomeNav = () => {
         <Stack.Screen
           name="Register Screen"
           component={RegisterScreen}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="Single Story Screen"
+          component={SingleBlogScreen}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="User Screen"
+          component={UserScreen}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="User Settings Screen"
+          component={UserSettingsScreen}
           options={{
             headerShown: false,
           }}

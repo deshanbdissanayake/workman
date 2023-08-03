@@ -21,137 +21,176 @@ import HomeNav from './HomeNav';
 import AuthContext from '../context/AuthContext';
 import RegisterScreen from '../screens/RegisterScreen';
 import MyBookingNav from './MyBookingNav';
+import { useState } from 'react';
+import CustomAlert from '../components/general/CustomAlert';
+import CustomModal from '../components/general/CustomModal';
+import MiniButton from '../components/general/MiniButton';
 
 const Drawer = createDrawerNavigator();
 
 // Custom drawer content component
-const CustomDrawerContent = ({ navigation, state, descriptors }) => {
-    const { logData, logout } = useContext(AuthContext);
+const CustomDrawerContent = ({ navigation, state, descriptors, handleLogoutClick }) => {
+    const { logData } = useContext(AuthContext);
 
-  const closeDrawer = () => {
-    navigation.closeDrawer();
-  };
+    const closeDrawer = () => {
+      navigation.closeDrawer();
+    };
 
-  const handleLogoutClick = () => {
-    Alert.alert(
-      'Logout',
-      'Are you sure you want to logout from the app ?',
-      [
-        {
-          text: 'Cancel',
-          style: 'cancel',
-        },
-        {
-          text: 'Logout',
-          style: 'destructive',
-          onPress: async () => {
-            logout();
-          },
-        },
-      ]
-    );
-  };
-
-  return (
-    <DrawerContentScrollView
-      contentContainerStyle={styles.drawerWrapper}
-    >
-      {/* Profile Section */}
-      <View style={styles.drawerTopWrapper}>
-        <View style={styles.profileSection}>
-          <View style={styles.profileImageWrapper}>
-            <FontAwesome5 name="user" size={50} color={colors.textDark} />
+    return (
+      <DrawerContentScrollView
+        contentContainerStyle={styles.drawerWrapper}
+      >
+        {/* Profile Section */}
+        <View style={styles.drawerTopWrapper}>
+          <View style={styles.profileSection}>
+            <View style={styles.profileImageWrapper}>
+              <FontAwesome5 name="user" size={50} color={colors.textDark} />
+            </View>
+            <View style={styles.profileTextWrapper}>
+              <Text style={styles.profileText}>{logData.log_userName}</Text>
+              <Text style={styles.profilePhone}>{logData.log_userNumber}</Text>
+            </View>
+            <View style={styles.drawerClose}>
+              <MiniButton
+                bgColor={colors.bgDark}
+                func={closeDrawer}
+                content={<Ionicons name="close" size={24} color={colors.textLight} />}
+              />
+            </View>
           </View>
-          <View style={styles.profileTextWrapper}>
-            <Text style={styles.profileText}>{logData.log_userName}</Text>
-            <Text style={styles.profilePhone}>{logData.log_userNumber}</Text>
-          </View>
-          <TouchableOpacity style={styles.drawerClose} onPress={closeDrawer} >
-            <Ionicons name="close" size={24} color={colors.textLight} />
-          </TouchableOpacity>
+
+          {/* Drawer Items */}
+          <DrawerItemList
+            state={state}
+            navigation={navigation}
+            descriptors={descriptors}
+          />
         </View>
-
-        {/* Drawer Items */}
-        <DrawerItemList
-          state={state}
-          navigation={navigation}
-          descriptors={descriptors}
-        />
-      </View>
-      <View style={styles.drawerBottomWrapper}>
-        <DrawerItem
-          label="Logout"
-          labelStyle={{color: colors.white}}
-          onPress={handleLogoutClick}
-          icon={({ size }) => (
-            <Ionicons name="log-out-outline" size={size} color={colors.white} />
-          )}
-        />
-      </View>
-
-    </DrawerContentScrollView>
-  );
+        <View style={styles.drawerBottomWrapper}>
+          <DrawerItem
+            label="Logout"
+            labelStyle={{color: colors.white}}
+            onPress={handleLogoutClick}
+            icon={({ size }) => (
+              <Ionicons name="log-out-outline" size={size} color={colors.white} />
+            )}
+          />
+        </View>
+      </DrawerContentScrollView>
+    );
 };
 
 const DrawerNav = () => {
+    const { logData, logout } = useContext(AuthContext);
 
-  return (
-    <Drawer.Navigator
-      initialRouteName="HomeNav"
-      drawerContent={(props) => <CustomDrawerContent {...props} />}
-      screenOptions={{
-        drawerActiveTintColor: colors.primary,
-        drawerInactiveTintColor: colors.white,
-      }}
-    >
-      <Drawer.Screen
-        name="HomeNav"
-        component={HomeNav}
-        options={{
-          drawerLabel: 'Home',
-          drawerIcon: ({ focused, color, size }) => (
-            <Ionicons
-              name={focused ? 'md-home' : 'md-home-outline'}
-              size={size}
-              color={color}
-            />
-          ),
-          headerShown: false,
-        }}
-      />
-      <Drawer.Screen
-        name="RegisterScreen"
-        component={RegisterScreen}
-        options={{
-          drawerLabel: 'Sign In',
-          drawerIcon: ({ focused, color, size }) => (
-            <Feather 
-                name={focused ? 'user-plus' : 'user'}
-                size={size} 
-                color={color}
-            />
-          ),
-          headerShown: false,
-        }}
-      />
-      <Drawer.Screen
-        name="MyBookingNav"
-        component={MyBookingNav}
-        options={{
-          drawerLabel: 'My Bookings',
-          drawerIcon: ({ focused, color, size }) => (
-            <Ionicons 
-                name={focused ? 'list-circle' : 'list-circle-outline'}
-                size={size} 
-                color={color}
-            />
-          ),
-          headerShown: false,
-        }}
-      />
+    const [showModal, setShowModal] = useState(false);
+    const [successMessage, setSuccessMessage] = useState({});
+    const [refresh, setRefresh] = useState(false); //modal refresh
 
-    </Drawer.Navigator>
-  );
+    const handleModalCancel = () => {
+        setShowModal(false);
+    };
+    
+    const handleModalOk = async () => {
+      setRefresh(true)
+      await logout();
+      setRefresh(false)
+      setShowModal(false);
+
+      setSuccessMessage({ type: 'success', msg: 'Logged Out Successfully!' });
+
+      setTimeout(() => {
+        setSuccessMessage({});
+      }, 700);
+    };
+
+    const handleLogoutClick = () => {
+      setShowModal(true)
+    };
+
+    return (
+      <>
+      <Drawer.Navigator
+        initialRouteName="HomeNav"
+        drawerContent={(props) => <CustomDrawerContent {...props} handleLogoutClick={handleLogoutClick} />}
+        screenOptions={{
+          drawerActiveTintColor: colors.primary,
+          drawerInactiveTintColor: colors.white,
+        }}
+      >
+        <Drawer.Screen
+          name="HomeNav"
+          component={HomeNav}
+          options={{
+            drawerLabel: 'Home',
+            drawerIcon: ({ focused, color, size }) => (
+              <Ionicons
+                name={focused ? 'md-home' : 'md-home-outline'}
+                size={size}
+                color={color}
+              />
+            ),
+            headerShown: false,
+          }}
+        />
+        {!logData.log_status ? (
+          <Drawer.Screen
+            name="RegisterScreen"
+            component={RegisterScreen}
+            options={{
+              drawerLabel: 'Sign In',
+              drawerIcon: ({ focused, color, size }) => (
+                <Feather 
+                    name={focused ? 'user-plus' : 'user'}
+                    size={size} 
+                    color={color}
+                />
+              ),
+              headerShown: false,
+            }}
+          />
+        ):(
+          <Drawer.Screen
+            name="MyBookingNav"
+            component={MyBookingNav}
+            options={{
+              drawerLabel: 'My Bookings',
+              drawerIcon: ({ focused, color, size }) => (
+                <Ionicons 
+                    name={focused ? 'list-circle' : 'list-circle-outline'}
+                    size={size} 
+                    color={color}
+                />
+              ),
+              headerShown: false,
+            }}
+          />
+        )}
+
+      </Drawer.Navigator>
+
+      {showModal && (
+        <View style={styles.alertStyles}>
+            <CustomModal
+                title={'Confirm Logout'}
+                content={'Are you sure ?'}
+                cancelButtonText={'Cancel'}
+                okButtonText={'Confirm'}
+                pressCancel={handleModalCancel}
+                pressOk={handleModalOk}
+                refresh={refresh}
+            />
+        </View>
+      )}
+
+      {Object.keys(successMessage).length > 0 && (
+          <View style={styles.alertStyles}>
+              <CustomAlert type={successMessage.type} msg={successMessage.msg} />
+          </View>
+      )}
+
+      </>
+    );
 };
 
 export default DrawerNav;
@@ -207,4 +246,15 @@ const styles = StyleSheet.create({
     top: 0,
     right: 0,
   },
+  alertStyles: {
+    zIndex: 1,
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+},
 })

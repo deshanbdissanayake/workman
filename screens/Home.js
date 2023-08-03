@@ -85,19 +85,27 @@ const Home = () => {
         navigation.navigate('Category List', {categories});
     }
 
+    const handleUser = () => {
+        navigation.navigate('User Screen');
+    }
+
     const onRefresh = async () => {
         setRefreshing(true);
         await fetchData();
         setRefreshing(false);
     }
 
+    const handleCardClick = (item) => {
+        navigation.navigate('Single Story Screen', { item })
+    }
+
     const renderLatestStory = ({ item }) => (
-        <CardLatestStory item={item} />
+        <CardLatestStory item={item} handleCardClick={() => handleCardClick(item)} />
     );
 
     return (
         <>
-            <Header name={'WORKMAN'} />
+            <Header name={'WORKMAN'} handleUser={handleUser} />
             <ScrollView 
                 style={styles.container} 
                 showsVerticalScrollIndicator={false} 

@@ -3,9 +3,11 @@ import React from 'react'
 import colors from '../../assets/colors/colors'
 import { Ionicons } from '@expo/vector-icons'
 
-const CardLatestStory = ({ item }) => {
+const CardLatestStory = ({ item, handleCardClick }) => {
+  
+
   return (
-    <TouchableOpacity style={styles.latestItem} key={item.id}>
+    <TouchableOpacity style={styles.latestItem} key={item.id} onPress={handleCardClick}>
       <Image style={styles.latestItemImage} source={{ uri : item.image }} />
       <View style={styles.latestItemText}>
         <View style={styles.iconWrapper}>

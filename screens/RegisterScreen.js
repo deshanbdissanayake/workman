@@ -5,7 +5,6 @@ import colors from '../assets/colors/colors';
 import { Entypo, Feather, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useState } from 'react';
 import Button from '../components/general/Button';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import Input from '../components/general/Input';
 
 import { sendOtp, verifyNumber, saveUser, saveAsyncStorage } from '../assets/data/user';
@@ -347,7 +346,7 @@ const RegisterScreen = ({ navigation }) => {
                                 onChangeText={(text) => setPhoneNumber(text)}
                                 placeholder={'Ex: 71xxxxxxx'}
                                 secureTextEntry={false}
-                                icon={<Ionicons name="call-outline" size={24} color={colors.gray} />}
+                                icon={<Ionicons name="call-outline" size={24} color={colors.textGray} />}
                                 editable={true}
                                 maxLength={9}
                             />
@@ -370,7 +369,7 @@ const RegisterScreen = ({ navigation }) => {
                                 onChangeText={(text) => setOtp(text)}
                                 placeholder={'Check Your Messages for OTP'}
                                 secureTextEntry={false}
-                                icon={<MaterialCommunityIcons name="form-textbox-password" size={24} color={colors.gray} />}
+                                icon={<MaterialCommunityIcons name="form-textbox-password" size={24} color={colors.textGray} />}
                                 editable={true}
                                 maxLength={4}
                             />
@@ -399,8 +398,9 @@ const RegisterScreen = ({ navigation }) => {
                             <Text style={styles.formLabelStyles}>Your Confirmed Phone Number</Text>
                             <Input
                                 value={phoneNumber}
-                                icon={<Ionicons name="call-outline" size={24} color={colors.gray} />}
+                                icon={<Ionicons name="call-outline" size={24} color={colors.textGray} />}
                                 editable={false}
+                                disabled={true}
                             />
                         </View>
 
@@ -412,7 +412,7 @@ const RegisterScreen = ({ navigation }) => {
                                 onChangeText={(text) => setWhatsapp(text)}
                                 placeholder={'Ex: 71xxxxxxx'}
                                 secureTextEntry={false}
-                                icon={<Ionicons name="logo-whatsapp" size={24} color={colors.gray} />}
+                                icon={<Ionicons name="logo-whatsapp" size={24} color={colors.textGray} />}
                                 editable={true}
                                 maxLength={9}
                             />
@@ -434,7 +434,7 @@ const RegisterScreen = ({ navigation }) => {
                                 value={name}
                                 onChangeText={(text) => setName(text)}
                                 placeholder={'Name Here'}
-                                icon={<Feather name="user" size={24} color={colors.gray} />}
+                                icon={<Feather name="user" size={24} color={colors.textGray} />}
                                 editable={true}
                             />
 
@@ -455,7 +455,7 @@ const RegisterScreen = ({ navigation }) => {
                                 value={email}
                                 onChangeText={(text) => setEmail(text)}
                                 placeholder={'Email Here'}
-                                icon={<Entypo name="email" size={24} color={colors.gray} />}
+                                icon={<Entypo name="email" size={24} color={colors.textGray} />}
                                 editable={true}
                             />
 
@@ -555,7 +555,7 @@ const RegisterScreen = ({ navigation }) => {
                                 value={address}
                                 onChangeText={(text) => setAddress(text)}
                                 placeholder={'Address Here'}
-                                icon={<Ionicons name="home-outline" size={24} color={colors.gray} />}
+                                icon={<Ionicons name="home-outline" size={24} color={colors.textGray} />}
                                 editable={true}
                                 multiline={true}
                                 textArea={true}

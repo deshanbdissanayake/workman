@@ -147,7 +147,7 @@ const SingleCategoryScreen = ({ route, navigation }) => {
     //=========================================================================================
 
     useEffect(()=>{
-        fetchCities()
+        loadFunctions();
     },[])
 
     // Use useFocusEffect hook to hide the CustomAlert when the screen gains focus
@@ -161,6 +161,10 @@ const SingleCategoryScreen = ({ route, navigation }) => {
         }, [])
     );
 
+    const loadFunctions = async () => {
+        await fetchCities()
+        await handleCheckRegistered()
+    }
 
     const fetchCities = async () => {
         const res = await getCities(); 
@@ -244,15 +248,14 @@ const SingleCategoryScreen = ({ route, navigation }) => {
 
                     <View style={styles.formGroupWrapper}>
                         <Text style={styles.formLabelStyles}>Your Contact Number</Text>
-                        <TouchableOpacity onPress={handleCheckRegistered}>
-                            <Input
-                                value={phoneNumber}
-                                placeholder={'Enter Your Phone Number'}
-                                icon={<Ionicons name="call-outline" size={24} color={colors.gray} />}
-                                editable={false}
-                                multiline={true}
-                            />
-                        </TouchableOpacity>
+                        <Input
+                            value={phoneNumber}
+                            placeholder={'Enter Your Phone Number'}
+                            icon={<Ionicons name="call-outline" size={24} color={colors.textGray} />}
+                            editable={false}
+                            multiline={true}
+                            disabled={true}
+                        />
                         {phoneNumberError && (
                             <View style={styles.errorWrapper}>
                                 <Text style={styles.errorMessage}>
@@ -268,7 +271,7 @@ const SingleCategoryScreen = ({ route, navigation }) => {
                             <Input
                                 value={date}
                                 placeholder={'Select the Date'}
-                                icon={<Feather name="calendar" size={24} color={colors.gray} />}
+                                icon={<Feather name="calendar" size={24} color={colors.textGray} />}
                                 editable={false}
                             />
                         </TouchableOpacity>
@@ -288,7 +291,7 @@ const SingleCategoryScreen = ({ route, navigation }) => {
                             value={address}
                             onChangeText={(text) => setAddress(text)}
                             placeholder={'Enter Your Address'}
-                            icon={<Entypo name="location" size={24} color={colors.gray} />}
+                            icon={<Entypo name="location" size={24} color={colors.textGray} />}
                             editable={true}
                             multiline={true}
                         />
@@ -304,7 +307,7 @@ const SingleCategoryScreen = ({ route, navigation }) => {
                     <View style={styles.formGroupWrapper}>
                         <Text style={styles.formLabelStyles}>Select Your City</Text>
                         <View style={styles.dropDownStyles}>
-                            <MaterialIcons name="location-city" size={24} color={colors.gray} />
+                            <MaterialIcons name="location-city" size={24} color={colors.textGray} />
                             <View style={styles.pickerStyles}>
                                 <Picker
                                     selectedValue={city}
@@ -341,7 +344,7 @@ const SingleCategoryScreen = ({ route, navigation }) => {
                     <View style={styles.formGroupWrapper}>
                         <Text style={styles.formLabelStyles}>Select Your Area</Text>
                         <View style={styles.dropDownStyles}>
-                            <Ionicons name="location-outline" size={24} color={colors.gray} />
+                            <Ionicons name="location-outline" size={24} color={colors.textGray} />
                             <View style={styles.pickerStyles}>
                                 <Picker
                                     selectedValue={area}
@@ -397,25 +400,26 @@ const SingleCategoryScreen = ({ route, navigation }) => {
                             value={note}
                             onChangeText={(text) => setNote(text)}
                             placeholder={'Enter Your Note'}
-                            icon={<Feather name="pen-tool" size={24} color={colors.gray} />}
+                            icon={<Feather name="pen-tool" size={24} color={colors.textGray} />}
                             multiline={true}
                             textArea={true}
+                            editable={true}
                         />
+                    </View>
+                    <View>
+                        <View style={styles.formGroupWrapper}>
+                            <Text style={styles.bottomTextStyles}>To verify your booking and discuss pricing details, our experts will contact you.</Text>
+                        </View>
+                        <View style={styles.formGroupWrapper}>
+                            <Button
+                                bgColor={colors.primaryDark}
+                                txtColor={colors.white}
+                                text={'Continue Booking'}
+                                func={handleBooking}
+                            />
+                        </View>
                     </View>
                 </ScrollView>
-                <View>
-                    <View style={styles.formGroupWrapper}>
-                        <Text style={styles.bottomTextStyles}>To verify your booking and discuss pricing details, our experts will contact you.</Text>
-                    </View>
-                    <View style={styles.formGroupWrapper}>
-                        <Button
-                            bgColor={colors.primaryDark}
-                            txtColor={colors.white}
-                            text={'Continue Booking'}
-                            func={handleBooking}
-                        />
-                    </View>
-                </View>
             </View>
             {showDatePicker && (
                 <DateTimePicker

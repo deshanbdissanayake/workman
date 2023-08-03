@@ -96,5 +96,31 @@ const getMyBookings = async () => {
   }
 };
 
+const getUserData = async () => {
+  const data = await AsyncStorage.getItem('log_data');
+  let result = null;
 
-export { getCategories, getLatestStories, getSlides, getCities, getAreasByCityId, getMyBookings };
+  if (!data || data === '') {
+    console.log('log_data does not exist in AsyncStorage (saveData.js)');
+    return result;
+  } else {
+    const logData = JSON.parse(data);
+    const userToken = logData.log_userToken;
+
+    const url = `https://jobs2.introps.com/App_api/get_user_details/${userToken}`;
+    
+    try {
+      const response = await fetch(url);
+      const getData = await response.json();
+      result = getData;
+    } catch (e) {
+      console.log('something went wrong getting user data', e);
+    } finally {
+      return result;
+    }
+
+  }
+}
+
+
+export { getCategories, getLatestStories, getSlides, getCities, getAreasByCityId, getMyBookings, getUserData };
