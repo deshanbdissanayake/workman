@@ -24,7 +24,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "package": "com.desh1234.snackfe837d593b374af782e90ba7c7af8f9b"
     },
     "plugins": [
       [
@@ -39,6 +40,11 @@
     ],
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "55912fce-8591-4d8a-b2f3-a315ecaa7d25"
+      }
     }
   }
 }

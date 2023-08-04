@@ -6,7 +6,9 @@ import colors from '../assets/colors/colors';
 const SplashScreen = () => {
   return (
     <View style={styles.container}>
-      <Image source={require('../assets/images/logo.png')} style={styles.imageStyles} />
+      <View style={styles.imageWrapper}>
+        <Image source={require('../assets/images/logo.png')} style={styles.imageStyles} />
+      </View>
     </View>
   )
 }
@@ -20,8 +22,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: colors.primary,
   },
+  imageWrapper: {
+    width: 150,
+    height: 150,
+    borderRadius: 60,
+    backgroundColor: colors.bgLight,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   imageStyles: {
-      width: 150,
-      resizeMode: 'contain',
+    width: 100,
+    resizeMode: 'contain',
   },
 })

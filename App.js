@@ -40,7 +40,7 @@ const App = () => {
       <AuthProvider>
         <View style={styles.container}>
           <StatusBar backgroundColor={colors.bgDark} barStyle="light-content" />
-          <AppNav />
+          <AppNav/>
         </View>
       </AuthProvider>
     );
