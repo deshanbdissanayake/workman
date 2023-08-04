@@ -1,15 +1,18 @@
-import { Image, StyleSheet, View } from 'react-native';
+import { Image, StyleSheet, View, StatusBar } from 'react-native';
 import React from 'react';
 import colors from '../assets/colors/colors';
 
 
 const SplashScreen = () => {
   return (
-    <View style={styles.container}>
-      <View style={styles.imageWrapper}>
-        <Image source={require('../assets/images/logo.png')} style={styles.imageStyles} />
+    <>
+      <StatusBar backgroundColor={colors.primary} barStyle="dark-content" />
+      <View style={styles.container}>
+        <View style={styles.imageWrapper}>
+          <Image source={require('../assets/images/logo.png')} style={styles.imageStyles} />
+        </View>
       </View>
-    </View>
+    </>
   )
 }
 
