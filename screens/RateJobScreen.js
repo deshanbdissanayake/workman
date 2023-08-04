@@ -9,6 +9,7 @@ import Button from '../components/general/Button';
 import { saveJobRating } from '../assets/data/saveData';
 import CustomAlert from '../components/general/CustomAlert'
 import CustomModal from '../components/general/CustomModal'
+import FormErrorMsg from '../components/general/FormErrorMsg';
 
 
 const RateJobScreen = ({ route }) => {
@@ -123,9 +124,9 @@ const RateJobScreen = ({ route }) => {
                     func={handleGoBack}
                     content={<Ionicons name="arrow-back-outline" size={24} color={colors.textDark} />}
                 />
+                <Text style={styles.titleStyles}>Rate This Job</Text>
             </View>
             <View style={styles.bottomWrapper}>
-                <Text style={styles.titleStyles}>Rate This Job</Text>
                 <Text style={styles.subtitleStyles}>{booking.posted_date} - {booking.prof_name}</Text>
 
                 <ScrollView style={styles.formWrapper} showsVerticalScrollIndicator={false}>
@@ -133,7 +134,7 @@ const RateJobScreen = ({ route }) => {
                         <Text style={styles.labelStyles}>Choose Your Rating :</Text>
                         <View style={styles.starWrapper}>{renderStars()}</View>
                         {ratingError && (
-                            <Text style={styles.errorTextStyles}>Please Enter Your Rating</Text>
+                            <FormErrorMsg msg={'Please Enter Your Rating!'} />
                         )}
                     </View>
                     <View style={styles.formGroup}>
@@ -149,7 +150,7 @@ const RateJobScreen = ({ route }) => {
                             textArea={true}
                         />
                         {ratingTextError && (
-                            <Text style={styles.errorTextStyles}>Please Enter Your Review</Text>
+                            <FormErrorMsg msg={'Please Enter Your Review!'} />
                         )}
                     </View>
                     {
@@ -181,17 +182,18 @@ const RateJobScreen = ({ route }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        paddingHorizontal: 15,
-        paddingVertical: 20,
+        padding: 20,
     },
     topWrapper: {
+        flexDirection: 'row',
+        alignItems: 'center',
         marginBottom: 20,
     },
-    bottomWrapper: {},
     titleStyles: {
         fontFamily: 'ms-semibold',
         fontSize: 18,
         color: colors.textDark,
+        marginLeft: 20,
     },
     subtitleStyles: {
         fontFamily: 'ms-regular',
@@ -214,14 +216,6 @@ const styles = StyleSheet.create({
     },
     starStyles: {
         marginRight: 5,
-    },
-    errorTextStyles: {
-        fontFamily: 'ms-regular',
-        fontSize: 12,
-        color: colors.danger,
-        textAlign: 'left',
-        paddingLeft: 5,
-        marginTop: 5,
     },
     alertStyles: {
         zIndex: 1,

@@ -33,9 +33,9 @@ export const AuthProvider = ({ children }) => {
             setLogData(data);
             setUserStatus(data.log_status);
         } catch (error) {
-        console.error('Error retrieving log_data from AsyncStorage:', error);
+            console.error('Error retrieving log_data from AsyncStorage:', error);
         } finally {
-        setIsLoading(false);
+            setIsLoading(false);
         }
     }
 

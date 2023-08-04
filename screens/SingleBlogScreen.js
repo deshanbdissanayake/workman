@@ -21,9 +21,9 @@ const SingleBlogScreen = ({ route, navigation }) => {
                 func={handleGoBack}
                 content={<Ionicons name="arrow-back-outline" size={24} color={colors.textDark} />}
                 />
+                <Text style={styles.titleStyles}>{item.title}</Text>
             </View>
             <View style={styles.bottomWrapper}>
-                <Text style={styles.titleStyles}>{item.title}</Text>
 
                 <View>
                     <Image source={{ uri : item.image }} style={styles.imageStyles} />
@@ -50,18 +50,18 @@ export default SingleBlogScreen
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        paddingHorizontal: 15,
-        paddingVertical: 20,
+        padding: 20,
     },
     topWrapper: {
+        flexDirection: 'row',
+        alignItems: 'center',
         marginBottom: 20,
     },
-    bottomWrapper: {},
     titleStyles: {
         fontFamily: 'ms-semibold',
         fontSize: 18,
         color: colors.textDark,
-        marginBottom: 20,
+        marginLeft: 20,
     },
     rowWrapper: {
         flexDirection: 'row',

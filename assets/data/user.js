@@ -68,6 +68,7 @@ const saveAsyncStorage = async (asyncData) => {
   try {
     const logDataString = JSON.stringify(asyncData);
     await AsyncStorage.setItem('log_data', logDataString);
+    console.log('saved in async storage')
   } catch (error) {
     console.error('Error saving log_data to AsyncStorage:', error);
   }

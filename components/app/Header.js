@@ -5,13 +5,21 @@ import { useNavigation } from '@react-navigation/native';
 import { DrawerActions } from '@react-navigation/native';
 
 import colors from '../../assets/colors/colors'; 
+import { useContext } from 'react';
+import AuthContext from '../../context/AuthContext';
 
 const Header = ({name, handleUser}) => {
+    const { userStatus } = useContext(AuthContext);
+
     const navigation = useNavigation();
 
     const openDrawer = () => {
         console.log('handle drawer')
         navigation.dispatch(DrawerActions.openDrawer());
+    }
+
+    const handleSignIn = () => {
+        navigation.navigate('Register Screen');
     }
 
     return (
@@ -25,7 +33,7 @@ const Header = ({name, handleUser}) => {
                 <Text style={styles.headerTextStyles}>{name}</Text>
             </View>
             <View style={styles.rightContainer}>
-                <TouchableOpacity onPress={handleUser}>
+                <TouchableOpacity onPress={ userStatus ? handleUser : handleSignIn }>
                     <View style={styles.buttonClickAreaStyles}>
                         <Ionicons name="person" size={24} color={colors.textLight} />
                     </View>

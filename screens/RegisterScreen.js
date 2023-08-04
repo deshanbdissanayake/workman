@@ -12,6 +12,7 @@ import { log_data } from '../assets/data/system';
 import { getAreasByCityId, getCities } from '../assets/data/getData';
 import { Picker } from '@react-native-picker/picker';
 import AuthContext from '../context/AuthContext';
+import FormErrorMsg from '../components/general/FormErrorMsg';
 
 const RegisterScreen = ({ navigation }) => {
     const { login } = useContext(AuthContext)
@@ -352,11 +353,7 @@ const RegisterScreen = ({ navigation }) => {
                             />
 
                             {phoneNumberError && (
-                                <View style={styles.errorWrapper}>
-                                    <Text style={styles.errorMessage}>
-                                        Check your phone number again!
-                                    </Text>
-                                </View>
+                                <FormErrorMsg msg={'Check your phone number again!'} />
                             )}
                         </View>
                         ) : (
@@ -375,11 +372,7 @@ const RegisterScreen = ({ navigation }) => {
                             />
 
                             {otpError && (
-                                <View style={styles.errorWrapper}>
-                                    <Text style={styles.errorMessage}>
-                                        Check your OTP again!
-                                    </Text>
-                                </View>
+                                <FormErrorMsg msg={'Check your OTP again!'} />
                             )}
                         </View>
                         )}
@@ -418,11 +411,7 @@ const RegisterScreen = ({ navigation }) => {
                             />
 
                             {whatsappError && (
-                                <View style={styles.errorWrapper}>
-                                    <Text style={styles.errorMessage}>
-                                        Check your WhatsApp Number again!
-                                    </Text>
-                                </View>
+                                <FormErrorMsg msg={'Check your WhatsApp Number again!'} />
                             )}
 
                         </View>
@@ -439,11 +428,7 @@ const RegisterScreen = ({ navigation }) => {
                             />
 
                             {nameError && (
-                                <View style={styles.errorWrapper}>
-                                    <Text style={styles.errorMessage}>
-                                        Name should have more than 4 letters!
-                                    </Text>
-                                </View>
+                                <FormErrorMsg msg={'Name should have more than 4 letters!'} />
                             )}
                         </View>
 
@@ -460,11 +445,7 @@ const RegisterScreen = ({ navigation }) => {
                             />
 
                             {emailError ? (
-                                <View style={styles.errorWrapper}>
-                                    <Text style={styles.errorMessage}>
-                                        Check your Email again!
-                                    </Text>
-                                </View>
+                                <FormErrorMsg msg={'Check your Email again!'} />
                             ) : (
                                 ''
                             )}
@@ -494,11 +475,7 @@ const RegisterScreen = ({ navigation }) => {
                                 </Picker>
                             </View>
                             {cityError && (
-                                <View style={styles.errorWrapper}>
-                                    <Text style={styles.errorMessage}>
-                                        Select a City!
-                                    </Text>
-                                </View>
+                                <FormErrorMsg msg={'Select a City!'} />
                             )}
                         </View>
 
@@ -540,11 +517,7 @@ const RegisterScreen = ({ navigation }) => {
                             </View>
 
                             {areaError && (
-                                <View style={styles.errorWrapper}>
-                                    <Text style={styles.errorMessage}>
-                                        Select an Area!
-                                    </Text>
-                                </View>
+                                <FormErrorMsg msg={'Select an Area!'} />
                             )}
                         </View>
 
@@ -562,11 +535,7 @@ const RegisterScreen = ({ navigation }) => {
                             />
 
                             {addressError && (
-                                <View style={styles.errorWrapper}>
-                                    <Text style={styles.errorMessage}>
-                                        Check your Address again!
-                                    </Text>
-                                </View>
+                                <FormErrorMsg msg={'Check your Address again!'} />
                             )}
                         </View>
 
@@ -609,8 +578,7 @@ export default RegisterScreen
 const styles = StyleSheet.create({
     container : {
         flex: 1,
-        paddingHorizontal: 15,
-        paddingVertical: 20,
+        padding: 20,
     },
     topWrapper: {
         flexDirection: 'row',
@@ -650,16 +618,4 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         marginBottom: 10,
     },
-
-    //=========================================================
-    errorWrapper: {
-        width: '100%',
-    },
-    errorMessage: {
-        color: colors.danger,
-        fontSize: 11,
-        textAlign: 'right',
-        fontFamily: 'ms-regular',
-    },
-    //=========================================================
 })

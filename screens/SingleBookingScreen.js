@@ -43,9 +43,9 @@ const SingleBookingScreen = ({ route }) => {
                     func={handleGoBack}
                     content={<Ionicons name="arrow-back-outline" size={24} color={colors.textDark} />}
                 />
+                <Text style={styles.titleStyles}>Job Details</Text>
             </View>
             <ScrollView style={styles.bottomWrapper} showsVerticalScrollIndicator={false}>
-                <Text style={styles.titleStyles}>Job Details</Text>
                 <Text style={styles.subtitleStyles}>{booking.posted_date} - {booking.prof_name}</Text>
                 
                 <View style={styles.sectionWrapper}>
@@ -170,19 +170,20 @@ const SingleBookingScreen = ({ route }) => {
 export default SingleBookingScreen
 
 const styles = StyleSheet.create({
-    container : {
+    container: {
         flex: 1,
-        paddingHorizontal: 15,
-        paddingVertical: 20,
+        padding: 20,
     },
-    topWrapper : {
+    topWrapper: {
+        flexDirection: 'row',
+        alignItems: 'center',
         marginBottom: 20,
     },
-    bottomWrapper : {},
     titleStyles: {
         fontFamily: 'ms-semibold',
         fontSize: 18,
         color: colors.textDark,
+        marginLeft: 20,
     },
     subtitleStyles: {
         fontFamily: 'ms-regular',

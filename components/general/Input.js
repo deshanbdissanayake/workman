@@ -6,10 +6,11 @@ const Input = ({keyboardType, value, onChangeText, placeholder, secureTextEntry,
     const inputRef = useRef(null);useRef
 
     const handleInputWrapperClick = () => {
-      if (inputRef.current) {
-        inputRef.current.focus();
-      }
+        if (textArea && inputRef.current) {
+            inputRef.current.focus();
+        }
     };
+    
   
     return (
     <View 

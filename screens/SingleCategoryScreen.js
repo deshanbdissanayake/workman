@@ -15,6 +15,7 @@ import { saveBookingJob } from '../assets/data/saveData';
 import { useFocusEffect } from '@react-navigation/native';
 import CustomAlert from '../components/general/CustomAlert'
 import CustomModal from '../components/general/CustomModal'
+import FormErrorMsg from '../components/general/FormErrorMsg';
 
 const SingleCategoryScreen = ({ route, navigation }) => {
     const { prof } = route.params;
@@ -48,6 +49,12 @@ const SingleCategoryScreen = ({ route, navigation }) => {
     //=========================================================================================
 
     const handleBooking = async () => {
+        const response = await handleCheckRegistered();
+
+        if (!response) {
+            return;
+        }
+          
         // details validation
         let isValid = true;
 
@@ -146,22 +153,22 @@ const SingleCategoryScreen = ({ route, navigation }) => {
 
     //=========================================================================================
 
-    useEffect(()=>{
-        loadFunctions();
-    },[])
+    useEffect(() => {
+        loadData();
+    }, []);
 
     // Use useFocusEffect hook to hide the CustomAlert when the screen gains focus
     useFocusEffect(
         useCallback(() => {
-        return () => {
-            // Cleanup function to reset showModal when the screen loses focus
-            setShowModal(false);
-            setSuccessMessage({});
-        };
+            return () => {
+                // Cleanup function to reset showModal when the screen loses focus
+                setShowModal(false);
+                setSuccessMessage({});
+            };
         }, [])
     );
 
-    const loadFunctions = async () => {
+    const loadData = async () => {
         await fetchCities()
         await handleCheckRegistered()
     }
@@ -194,6 +201,7 @@ const SingleCategoryScreen = ({ route, navigation }) => {
     }
 
     const handleCheckRegistered = async () => {
+        let registerStatus = true;
         try {
             const log_data_string = await AsyncStorage.getItem('log_data');
     
@@ -201,6 +209,7 @@ const SingleCategoryScreen = ({ route, navigation }) => {
                 const log_data = JSON.parse(log_data_string);
     
                 if (log_data.log_status === undefined || log_data.log_status === false) {
+                    registerStatus = false;
                     navigation.navigate('Register Screen')
                 } else {
                     setPhoneNumber(log_data.log_userNumber);
@@ -212,11 +221,14 @@ const SingleCategoryScreen = ({ route, navigation }) => {
                     console.log('Auto filled from AsyncStorage');
                 }
             } else {
+                registerStatus = false;
                 navigation.navigate('Register Screen')
             }
         } catch (error) {
             // Handle AsyncStorage retrieval errors here
             console.error('Error retrieving log_data:', error);
+        } finally {
+            return registerStatus;
         }
     };
     
@@ -257,11 +269,7 @@ const SingleCategoryScreen = ({ route, navigation }) => {
                             disabled={true}
                         />
                         {phoneNumberError && (
-                            <View style={styles.errorWrapper}>
-                                <Text style={styles.errorMessage}>
-                                    Your Phone Number Cannot be Empty!
-                                </Text>
-                            </View>
+                            <FormErrorMsg msg={'Your Phone Number Cannot be Empty!'} />
                         )}
                     </View>
 
@@ -276,11 +284,7 @@ const SingleCategoryScreen = ({ route, navigation }) => {
                             />
                         </TouchableOpacity>
                         {dateError && (
-                            <View style={styles.errorWrapper}>
-                                <Text style={styles.errorMessage}>
-                                    Please Select a Valid Future Date!
-                                </Text>
-                            </View>
+                            <FormErrorMsg msg={'Please Select a Valid Future Date!'} />
                         )}
                     </View>
 
@@ -296,11 +300,7 @@ const SingleCategoryScreen = ({ route, navigation }) => {
                             multiline={true}
                         />
                         {addressError && (
-                            <View style={styles.errorWrapper}>
-                                <Text style={styles.errorMessage}>
-                                    Enter Your Address!
-                                </Text>
-                            </View>
+                            <FormErrorMsg msg={'Enter Your Address!'} />
                         )}
                     </View>        
 
@@ -333,11 +333,7 @@ const SingleCategoryScreen = ({ route, navigation }) => {
                             </View>
                         </View>
                         {cityError && (
-                            <View style={styles.errorWrapper}>
-                                <Text style={styles.errorMessage}>
-                                    Select a City!
-                                </Text>
-                            </View>
+                            <FormErrorMsg msg={'Select a City!'} />
                         )}
                     </View>
 
@@ -385,11 +381,7 @@ const SingleCategoryScreen = ({ route, navigation }) => {
                         </View>
 
                         {areaError && (
-                            <View style={styles.errorWrapper}>
-                                <Text style={styles.errorMessage}>
-                                    Select an Area!
-                                </Text>
-                            </View>
+                            <FormErrorMsg msg={'Select an Area!'} />
                         )}
                     </View>
 
@@ -458,8 +450,7 @@ export default SingleCategoryScreen
 const styles = StyleSheet.create({
     container : {
         flex: 1,
-        paddingHorizontal: 15,
-        paddingVertical: 20,
+        padding: 20,
     },
     topWrapper: {
         flexDirection: 'row',
@@ -502,15 +493,6 @@ const styles = StyleSheet.create({
     },
     pickerStyles: {
         width: '90%',
-    },
-    errorWrapper: {
-        marginRight: 5,
-    },
-    errorMessage: {
-        fontFamily: 'ms-regular',
-        fontSize: 12,
-        color: colors.danger,
-        textAlign: 'right',
     },
     alertStyles: {
         zIndex: 1,

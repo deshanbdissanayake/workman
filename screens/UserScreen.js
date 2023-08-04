@@ -7,14 +7,18 @@ import AuthContext from '../context/AuthContext';
 import { getUserData } from '../assets/data/getData';
 import NoData from '../components/app/NoData';
 import Button from '../components/general/Button';
+import { useFocusEffect } from '@react-navigation/native';
+import { useCallback } from 'react';
 
 const UserScreen = ({ navigation }) => {
 
     const [userData, setUserData] = useState(null);
 
-    useEffect(()=>{
-        getUserFunc();
-    },[])
+    useFocusEffect(
+        useCallback(() => {
+            getUserFunc(); // This will be called whenever the screen gains focus
+        }, [])
+    );
 
     const getUserFunc = async () => {
         try{
@@ -41,9 +45,9 @@ const UserScreen = ({ navigation }) => {
                 func={handleGoBack}
                 content={<Ionicons name="arrow-back-outline" size={24} color={colors.textDark} />}
                 />
+                <Text style={styles.titleStyles}>User Details</Text>
             </View>
             <View style={styles.bottomWrapper}>
-                <Text style={styles.titleStyles}>User Details</Text>
                 {userData === null ? (
                     <NoData msg={'Loading...'} />
                 ) : (
@@ -118,18 +122,18 @@ export default UserScreen
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        paddingHorizontal: 15,
-        paddingVertical: 20,
+        padding: 20,
     },
     topWrapper: {
+        flexDirection: 'row',
+        alignItems: 'center',
         marginBottom: 20,
     },
-    bottomWrapper: {},
     titleStyles: {
         fontFamily: 'ms-semibold',
         fontSize: 18,
         color: colors.textDark,
-        marginBottom: 20,
+        marginLeft: 20,
     },
     rowWrapper: {
         flexDirection: 'row',
@@ -149,14 +153,14 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: colors.primary,
-        width: 100,
         height: 120,
         borderRadius: 10,
         marginRight: 10,
     },
     userImageStyles: {
-        width: 50,
-        height: 50,
+        width: 90,
+        height: 115,
+        borderRadius: 10,
         resizeMode: 'contain',
     },
     userWrapper: {

@@ -17,6 +17,8 @@ const MyBookingList = ({ navigation }) => {
     navigation.goBack();
   };
 
+
+
   const getMyBookingsFunc = async () => {
     setLoading(true);
     try {
@@ -49,9 +51,9 @@ const MyBookingList = ({ navigation }) => {
           func={handleGoBack}
           content={<Ionicons name="arrow-back-outline" size={24} color={colors.textDark} />}
         />
+        <Text style={styles.titleStyles}>My Bookings</Text>
       </View>
       <View style={styles.bottomWrapper}>
-        <Text style={styles.titleStyles}>My Previous Bookings</Text>
         <ScrollView
           showsVerticalScrollIndicator={false}
           refreshControl={
@@ -76,17 +78,17 @@ export default MyBookingList;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: 15,
-    paddingVertical: 20,
+    padding: 20,
   },
   topWrapper: {
+    flexDirection: 'row',
+    alignItems: 'center',
     marginBottom: 20,
   },
-  bottomWrapper: {},
   titleStyles: {
     fontFamily: 'ms-semibold',
     fontSize: 18,
     color: colors.textDark,
-    marginBottom: 15,
+    marginLeft: 20,
   },
 });
