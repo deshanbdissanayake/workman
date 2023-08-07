@@ -202,7 +202,7 @@ const RegisterScreen = ({ navigation }) => {
     const verifyNumberFunc = async () => {
         try {
             const verifyData = await verifyNumber(phoneNumber, otp);
-
+            
             if (verifyData.stt === 'ok') {
 
                 // =================================================
@@ -216,6 +216,7 @@ const RegisterScreen = ({ navigation }) => {
                     // Call saveAsyncStorage and wait for it to complete
                     setUserToken(verifyData.payload.token)
                     await saveAsyncStorage(updatedLogData);
+                    await login();
 
                     setButtonTitle('Save My Details')
                     setPhoneNumberVerified(true);

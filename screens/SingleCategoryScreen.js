@@ -21,7 +21,6 @@ const SingleCategoryScreen = ({ route, navigation }) => {
     const { prof } = route.params;
 
     const profId = prof.prof_id;
-    const [userToken, setUserToken] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
     
     const [date, setDate] = useState('');
@@ -49,7 +48,7 @@ const SingleCategoryScreen = ({ route, navigation }) => {
     //=========================================================================================
 
     const handleBooking = async () => {
-        const response = await handleCheckRegistered();
+        const response = await handleCheckRegistered(false);
 
         if (!response) {
             return;
@@ -170,11 +169,11 @@ const SingleCategoryScreen = ({ route, navigation }) => {
 
     const loadData = async () => {
         await fetchCities()
-        await handleCheckRegistered()
+        await handleCheckRegistered(true)
     }
 
     const fetchCities = async () => {
-        const res = await getCities(); 
+        const res = await getCities();
         setCityList(res);
     }
 
@@ -200,7 +199,7 @@ const SingleCategoryScreen = ({ route, navigation }) => {
         setShowDatePicker(true);
     }
 
-    const handleCheckRegistered = async () => {
+    const handleCheckRegistered = async (areaLoad) => {
         let registerStatus = true;
         try {
             const log_data_string = await AsyncStorage.getItem('log_data');
@@ -212,10 +211,10 @@ const SingleCategoryScreen = ({ route, navigation }) => {
                     registerStatus = false;
                     navigation.navigate('Register Screen')
                 } else {
+                    areaLoad && await fetchAreas(log_data.log_userCity);
+                    
                     setPhoneNumber(log_data.log_userNumber);
-                    setUserToken(log_data.log_userToken);
                     setCity(log_data.log_userCity);
-                    fetchAreas(log_data.log_userCity);
                     setArea(log_data.log_userArea)
                     setAddress(log_data.log_userAddress)
                     console.log('Auto filled from AsyncStorage');
