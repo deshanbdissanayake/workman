@@ -25,6 +25,7 @@ import { useState } from 'react';
 import CustomAlert from '../components/general/CustomAlert';
 import CustomModal from '../components/general/CustomModal';
 import MiniButton from '../components/general/MiniButton';
+import ProductNav from './ProductNav';
 
 const Drawer = createDrawerNavigator();
 
@@ -126,6 +127,21 @@ const DrawerNav = () => {
             drawerIcon: ({ focused, color, size }) => (
               <Ionicons
                 name={focused ? 'md-home' : 'md-home-outline'}
+                size={size}
+                color={color}
+              />
+            ),
+            headerShown: false,
+          }}
+        />
+        <Drawer.Screen
+          name="ProductNav"
+          component={ProductNav}
+          options={{
+            drawerLabel: 'Product',
+            drawerIcon: ({ focused, color, size }) => (
+              <Ionicons
+                name={focused ? 'cube' : 'cube-outline'}
                 size={size}
                 color={color}
               />

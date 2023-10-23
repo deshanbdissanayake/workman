@@ -17,8 +17,6 @@ const MyBookingList = ({ navigation }) => {
     navigation.goBack();
   };
 
-
-
   const getMyBookingsFunc = async () => {
     setLoading(true);
     try {

@@ -123,4 +123,28 @@ const getUserData = async () => {
 }
 
 
-export { getCategories, getLatestStories, getSlides, getCities, getAreasByCityId, getMyBookings, getUserData };
+const getProducts = async () => {
+  const data = await AsyncStorage.getItem('log_data');
+  let result = null;
+
+  if (!data || data === '') {
+    console.log('log_data does not exist in AsyncStorage (saveData.js)');
+    return result;
+  } else {
+
+    const url = `https://jobs2.introps.com/App_api/get_products`;
+    
+    try {
+      const response = await fetch(url);
+      const getData = await response.json();
+      result = getData;
+    } catch (e) {
+      console.log('something went wrong getting products', e);
+    } finally {
+      return result;
+    }
+
+  }
+};
+
+export { getCategories, getLatestStories, getSlides, getCities, getAreasByCityId, getMyBookings, getUserData, getProducts };

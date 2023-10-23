@@ -11,7 +11,6 @@ const Input = ({keyboardType, value, onChangeText, placeholder, secureTextEntry,
         }
     };
     
-  
     return (
     <View 
         style={[
