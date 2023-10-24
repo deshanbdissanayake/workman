@@ -8,6 +8,7 @@ import { getProducts } from '../assets/data/getData';
 import NoData from '../components/app/NoData';
 import CardProduct from '../components/app/CardProduct';
 import Select from '../components/general/Select';
+import Input from '../components/general/Input';
 
 const ProductList = ({ navigation }) => {
     const [productCats, setProductCats] = useState(null);
@@ -16,7 +17,7 @@ const ProductList = ({ navigation }) => {
     const [loading, setLoading] = useState(false);
     const [refreshing, setRefreshing] = useState(false);
     const [selectedCat, setSelectedCat] = useState(null);
-    const [selectedCatName, setSelectedCatName] = useState(null);
+    const [searchText, setSearchText] = useState(null);
 
     const handleGoBack = () => {
         navigation.goBack();
@@ -54,16 +55,24 @@ const ProductList = ({ navigation }) => {
     const selectCatFunc = (catId) => {
         setSelectedCat(catId)
 
-        
-        if (catId !== null) {
-            //get category name
-            const selectedCatArr = productCats.filter((cat) => cat.pro_cat_id == catId); 
-            setSelectedCatName(selectedCatArr[0].cat_name)
-
+        if (catId == null) {
+            setProducts(productsOriginal);
+        } else {
             //product filter by cat id
             setProducts(productsOriginal.filter((product) => product.fk_pro_cat_id == catId));
-        } else {
-            setProducts(productsOriginal);
+        }
+    }
+
+    const selectProFunc = (inputText ) => {
+        setSearchText(inputText );
+
+        if(inputText == null || inputText == ''){
+            selectCatFunc(selectedCat);
+        }else{
+            const filteredProducts = products.filter((product) =>
+                product.pro_name.toLowerCase().includes(inputText.toLowerCase())
+            );
+            setProducts(filteredProducts);
         }
     }
 
@@ -78,17 +87,29 @@ const ProductList = ({ navigation }) => {
                 <Text style={styles.titleStyles}>Products</Text>
             </View>
             <View>
-                <View style={styles.selectWrapper}>
-                    <Select
-                        data={
-                        productCats !== null && productCats.length !== 0
-                            ? productCats.map(cat => ({ id: cat.pro_cat_id, name: cat.cat_name }))
-                            : null
-                        }
-                        selectedValue={selectedCat}
-                        onValueChange={value => selectCatFunc(value)}
-                    />
-                    
+                <View style={styles.filterWrapper}>
+                    <View style={styles.filterStyles}>
+                        <Select
+                            data={
+                            productCats !== null && productCats.length !== 0
+                                ? productCats.map(cat => ({ id: cat.pro_cat_id, name: cat.cat_name }))
+                                : null
+                            }
+                            selectedValue={selectedCat}
+                            onValueChange={value => selectCatFunc(value)}
+                            placeholder={'Select Category'}
+                        />
+                    </View>
+                    <View style={styles.filterStyles}>
+                        <Input
+                            keyboardType={'default'}
+                            value={searchText}
+                            onChangeText={value=>selectProFunc(value)}
+                            placeholder={'Search by Name'}
+                            icon={<Ionicons name="search" size={24} color="black" />}
+                            editable={true}
+                        />
+                    </View>
                 </View>
 
                 <ScrollView
@@ -101,7 +122,7 @@ const ProductList = ({ navigation }) => {
                     <NoData msg={'Loading...'} />
                 ) : (products !== null && products.length !== 0 ) ? (
                     products.map((product, index) => (
-                        <CardProduct product={product} catName={selectedCatName} key={index} />
+                        <CardProduct product={product} key={index} />
                     ))
                 ) : (
                     <NoData msg={'No Products Yet!'} />
@@ -130,7 +151,10 @@ const styles = StyleSheet.create({
         color: colors.textDark,
         marginLeft: 20,
     },
-    selectWrapper: {
+    filterWrapper: {
         marginBottom: 20,
+    },
+    filterStyles: {
+        marginBottom: 10,
     }
 })

@@ -2,12 +2,12 @@ import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import colors from '../../assets/colors/colors'
 
-const CardProduct = ({ product, catName }) => {
+const CardProduct = ({ product }) => {
   return (
     <View style={styles.cardWrapper}>
         <View>
             <Text style={styles.proNameStyles}>{product.pro_name}</Text>
-            <Text style={styles.proCatNameStyles}>{catName}</Text>
+            <Text style={styles.proCatNameStyles}>{product.cat_name}</Text>
         </View>
         <View>
             <Text style={styles.proProPriceStyles}>{parseFloat(product.pro_price).toFixed(2)}</Text>

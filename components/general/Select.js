@@ -3,7 +3,7 @@ import { View, Text, StyleSheet } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import colors from '../../assets/colors/colors';
 
-const Select = ({ data = [], selectedValue, onValueChange }) => {
+const Select = ({ data = [], selectedValue, onValueChange, placeholder }) => {
   return (
     <View style={styles.container}>
       <Picker
@@ -12,7 +12,7 @@ const Select = ({ data = [], selectedValue, onValueChange }) => {
         style={styles.picker}
         accessibilityLabel="Select an option"
       >
-        <Picker.Item key={0} label={'Select'} value={null} />
+        <Picker.Item key={0} label={placeholder} value={null} />
         {data !== null && data.length !== 0 ? (
           data.map(item => (
             <Picker.Item key={item.id} label={item.name} value={item.id} />
