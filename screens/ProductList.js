@@ -86,7 +86,7 @@ const ProductList = ({ navigation }) => {
                 />
                 <Text style={styles.titleStyles}>Products</Text>
             </View>
-            <View>
+            <View style={styles.bottomWrapper}>
                 <View style={styles.filterWrapper}>
                     <View style={styles.filterStyles}>
                         <Select
@@ -144,6 +144,9 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         marginBottom: 20,
+    },
+    bottomWrapper: {
+        flex: 1,
     },
     titleStyles: {
         fontFamily: 'ms-semibold',

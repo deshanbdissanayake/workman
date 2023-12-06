@@ -5,11 +5,11 @@ import colors from '../../assets/colors/colors'
 const CardProduct = ({ product }) => {
   return (
     <View style={styles.cardWrapper}>
-        <View>
+        <View style={styles.proTopWrapper}>
             <Text style={styles.proNameStyles}>{product.pro_name}</Text>
             <Text style={styles.proCatNameStyles}>{product.cat_name}</Text>
         </View>
-        <View>
+        <View style={styles.proBottomWrapper}>
             <Text style={styles.proProPriceStyles}>{parseFloat(product.pro_price).toFixed(2)}</Text>
         </View>
     </View>
@@ -31,6 +31,12 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center'
     },
+    proTopWrapper:{
+        flex: 8
+    },
+    proBottomWrapper:{
+        flex: 2
+    },
     proNameStyles: {
         fontFamily: 'ms-semibold',
     },
@@ -42,5 +48,6 @@ const styles = StyleSheet.create({
     proProPriceStyles: {
         fontFamily: 'ms-semibold',
         fontSize: 16,
+        textAlign: 'right'
     }
 })
