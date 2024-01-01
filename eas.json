@@ -16,11 +16,7 @@
         "resourceClass": "m-medium"
       }
     },
-    "production": {
-      "android": {
-        "buildType": "apk"
-      }
-    }
+    "production": {}
   },
   "submit": {
     "production": {}
