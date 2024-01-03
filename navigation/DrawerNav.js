@@ -138,7 +138,7 @@ const DrawerNav = () => {
           name="ProductNav"
           component={ProductNav}
           options={{
-            drawerLabel: 'Product',
+            drawerLabel: 'Products',
             drawerIcon: ({ focused, color, size }) => (
               <Ionicons
                 name={focused ? 'cube' : 'cube-outline'}

@@ -124,6 +124,7 @@ const getUserData = async () => {
 
 
 const getProducts = async () => {
+  /*
   const data = await AsyncStorage.getItem('log_data');
   let result = null;
 
@@ -131,7 +132,7 @@ const getProducts = async () => {
     console.log('log_data does not exist in AsyncStorage (saveData.js)');
     return result;
   } else {
-
+*/
     const url = `https://jobs2.introps.com/App_api/get_products`;
     
     try {
@@ -144,7 +145,7 @@ const getProducts = async () => {
       return result;
     }
 
-  }
+  //}
 };
 
 export { getCategories, getLatestStories, getSlides, getCities, getAreasByCityId, getMyBookings, getUserData, getProducts };
